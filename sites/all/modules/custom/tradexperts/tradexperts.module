@@ -1,0 +1,33 @@
+<?php
+/**
+ * Implements hook_form_alter().
+ */
+function tradexperts_form_alter(&$form, &$form_state, $form_id) {
+	switch ($form_id) {
+		case 'user_login_block':
+			$form['#attributes']['class'] = array('user-login-block');
+
+			// Hack for disable autocomplete in some browsers for creating correct placeholders.
+			// Proof: http://stackoverflow.com/questions/12374442/chrome-browser-ignoring-autocomplete-off
+			$form['name']['#weight']        = 0;
+			$form['fake_name']              = $form['name'];
+			$form['fake_name']['#prefix']   = '<div class="element-hidden">';
+			$form['fake_name']['#suffix']   = '</div>';
+			$form['fake_name']['#required'] = FALSE;
+			$form['fake_name']['#weight']++;
+
+			$form['pass']['#weight']        = 2;
+			$form['fake_pass']              = $form['pass'];
+			$form['fake_pass']['#prefix']   = '<div class="element-hidden">';
+			$form['fake_pass']['#suffix']   = '</div>';
+			$form['fake_pass']['#required'] = FALSE;
+			$form['fake_pass']['#weight']++;
+
+			$form['actions']['#weight'] = 3;
+			$form['links']['#weight']   = 4;
+
+
+			$form['links']['#markup'] = '<div class="links">' . l(t('Registration'), 'user/register') . ' ' . l(t('Forgot password'), 'user/password') . '</div>';
+			break;
+	}
+}
