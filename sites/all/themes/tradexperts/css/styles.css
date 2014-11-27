@@ -146,7 +146,7 @@ header#header * {
 }
 #sidebar {
 	float: left;
-	width: 218px;
+	width: 220px;
 	margin-left: -7px;
 }
 #sidebar > section.region {
@@ -318,7 +318,8 @@ form.user-login-block .links a {
 	border-bottom-right-radius: 10px;
 	border-top: none;
 	border: 1px solid #dddddd;
-	margin-left: 1px;
+	width: 218px;
+	margin-left: 0px;
 }
 #block-poll-recent .choices .title {
 	color: #3c3c3c;
