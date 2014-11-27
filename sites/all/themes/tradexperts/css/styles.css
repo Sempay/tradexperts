@@ -342,7 +342,7 @@ form.user-login-block .links a {
 	margin: 0px;
 }
 #poll-view-voting .form-radio + label::before {
-	content: "";
+	content: " ";
     background-image: url(../images/poll-radio.png);
     display: inline-block;
     height: 15px;
