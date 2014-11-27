@@ -299,3 +299,71 @@ form.user-login-block .links a {
 #block-user-login {
 	margin-left: -3px;
 }
+
+.block .block-title {
+	background-image: url(../images/block-header-bg.png);
+	background-repeat: no-repeat;
+	color: #fff;
+	font-family: 'RobotoCondensed'; 
+	font-size: 22px;
+	font-weight: normal;
+	line-height: 40px;
+	padding-left: 8px;
+	vertical-align: middle;
+}
+#poll-view-voting {
+	background: #fff;
+	border-top: none;;
+	border: 1px solid #dddddd;
+}
+#block-poll-recent .choices .title {
+	color: #3c3c3c;
+	font-family: 'RobotoCondensed'; 
+	font-size: 16px;
+	font-weight: normal;
+	line-height: 18px;
+	padding: 5px 15px;
+}
+
+#poll-view-voting .form-item input[type="radio"] {
+    display:none;            
+}
+#poll-view-voting .form-item input[type="radio"] + label {
+	color: #232323;
+	font-family: 'RobotoCondensed-Bold'; 
+	font-size: 15px;
+	line-height: 29px;
+}
+.form-radios {
+	padding: 0px 0px 0px 34px;
+}
+.form-item {
+	margin: 0px;
+}
+#poll-view-voting .form-item input[type="radio"] + label::before {
+	content: "";
+    background-image: url(../images/poll-radio.png);
+    display: inline-block;
+    height: 15px;
+    margin: 0 7px 0 0;
+    vertical-align: middle;
+    width: 15px;
+}
+#poll-view-voting input[type="radio"]:checked + label:before {
+	background-position: 15px;
+}
+#poll-view-voting .form-submit {
+	background: #54c263;
+	border: none;
+	color: #ffffff;
+	font-family: 'RobotoCondensed-Bold';
+	font-size: 15px;
+	margin-bottom: 25px;
+	margin-top: 12px;
+	padding: 7px 37px;
+	text-transform: uppercase;
+}
+#poll-view-voting {
+	border-bottom-left-radius: 7px;
+	border-bottom-right-radius: 10px;
+}
