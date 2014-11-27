@@ -313,7 +313,7 @@ form.user-login-block .links a {
 }
 #poll-view-voting {
 	background: #fff;
-	border-top: none;;
+	border-top: none;
 	border: 1px solid #dddddd;
 }
 #block-poll-recent .choices .title {
@@ -322,16 +322,17 @@ form.user-login-block .links a {
 	font-size: 16px;
 	font-weight: normal;
 	line-height: 18px;
-	padding: 5px 15px;
+	padding: 4px 15px;
 }
 
-#poll-view-voting .form-item input[type="radio"] {
+#poll-view-voting .form-item .form-radio {
     display:none;            
 }
-#poll-view-voting .form-item input[type="radio"] + label {
+#poll-view-voting .form-item .form-radio + label {
 	color: #232323;
-	font-family: 'RobotoCondensed-Bold'; 
+	font-family: 'RobotoCondensed'; 
 	font-size: 15px;
+	font-weight: bold;
 	line-height: 29px;
 }
 .form-radios {
@@ -340,7 +341,7 @@ form.user-login-block .links a {
 .form-item {
 	margin: 0px;
 }
-#poll-view-voting .form-item input[type="radio"] + label::before {
+#poll-view-voting .form-radio + label::before {
 	content: "";
     background-image: url(../images/poll-radio.png);
     display: inline-block;
@@ -349,15 +350,16 @@ form.user-login-block .links a {
     vertical-align: middle;
     width: 15px;
 }
-#poll-view-voting input[type="radio"]:checked + label:before {
+#poll-view-voting .form-radio:checked + label:before {
 	background-position: 15px;
 }
 #poll-view-voting .form-submit {
 	background: #54c263;
 	border: none;
 	color: #ffffff;
-	font-family: 'RobotoCondensed-Bold';
+	font-family: 'RobotoCondensed';
 	font-size: 15px;
+	font-weight: bold;
 	margin-bottom: 25px;
 	margin-top: 12px;
 	padding: 7px 37px;

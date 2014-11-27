@@ -5,9 +5,9 @@
 	src: url(fonts/RobotoCondensed/RobotoCondensed-Regular.ttf) format("truetype");
 }
 @font-face {
-	font-family: 'RobotoCondensed-Bold';
+	font-family: 'RobotoCondensed';
 	font-style: normal;
-	font-weight: normal;
+	font-weight: bold;
 	src: url(fonts/RobotoCondensed/RobotoCondensed-Bold.ttf) format("truetype");
 }
 /*
