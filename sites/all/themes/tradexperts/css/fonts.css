@@ -4,3 +4,36 @@
 	font-weight: normal;
 	src: url(fonts/RobotoCondensed/RobotoCondensed-Regular.ttf) format("truetype");
 }
+@font-face {
+	font-family: 'RobotoCondensed-Bold';
+	font-style: normal;
+	font-weight: normal;
+	src: url(fonts/RobotoCondensed/RobotoCondensed-Bold.ttf) format("truetype");
+}
+/*
+@font-face {
+	font-family: 'RobotoCondensed-BoldItalic';
+	font-style: normal;
+	font-weight: normal;
+	src: url(fonts/RobotoCondensed/RobotoCondensed-BoldItalic.ttf) format("truetype");
+}
+@font-face {
+	font-family: 'RobotoCondensed-Italic';
+	font-style: normal;
+	font-weight: normal;
+	src: url(fonts/RobotoCondensed/RobotoCondensed-Italic.ttf) format("truetype");
+}
+@font-face {
+	font-family: 'RobotoCondensed-Light';
+	font-style: normal;
+	font-weight: normal;
+	src: url(fonts/RobotoCondensed/RobotoCondensed-Light.ttf) format("truetype");
+}
+@font-face {
+	font-family: 'RobotoCondensed-LightItalic';
+	font-style: normal;
+	font-weight: normal;
+	src: url(fonts/RobotoCondensed/RobotoCondensed-LightItalic.ttf) format("truetype");
+}
+
+*/
