@@ -54,6 +54,10 @@ function tradexperts_block_view($delta = '') {
 		case 'tradexperts_slideshow':
 			$items = tradexperts_slideshow_get_items();
 
+			if (!$items) {
+				return array('content' => '');
+			}
+
 			$block['content'] = array(
 				'#markup' => theme('tradexperts_slideshow', array(
 					'slides' => $items,
