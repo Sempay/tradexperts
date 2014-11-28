@@ -1,0 +1,13 @@
+name = Taxonomy vocabularies
+core = 7.x
+package = tradexperts
+version = 7.x-1.0
+project = taxonomy_vocabularies
+dependencies[] = features
+dependencies[] = taxonomy
+features[features_api][] = api:2
+features[taxonomy][] = advisors_to_order
+features[taxonomy][] = newsletter
+features[taxonomy][] = shop_forex
+mtime = 1417170366
+project path = sites/all/modules/features
