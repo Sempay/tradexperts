@@ -316,7 +316,6 @@ form.user-login-block .links a {
 	background: #fff;
 	border-bottom-left-radius: 7px;
 	border-bottom-right-radius: 10px;
-	border-top: none;
 	border: 1px solid #dddddd;
 	width: 218px;
 	margin-left: 0px;
@@ -370,4 +369,39 @@ form.user-login-block .links a {
 	padding: 7px 37px;
 	text-transform: uppercase;
 }
-
+footer#footer {
+	background-image: url(../images/footer-bg.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	height: 125px;
+	margin-top: 10px;
+	padding: 0;
+	width: 100%;
+}
+.footer-logo-image {
+	background-image: url(../images/tradeexpert-footer-logo.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	display: inline-block;
+	height: 70px;
+	margin-left: 173px;
+	margin-top: 34px;
+	width: 205px;
+}
+#block-block-1 {
+	display: inline-block;
+}
+#block-block-2 {
+	color: #ffffff;
+	display: inline-block;
+	font-family: 'Cuprum';
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 17px;
+	margin-left: 27px;
+	margin-top: -9px;
+	vertical-align: middle;
+}
+#block-block-2 a {
+	color: #ffffff;
+}

@@ -78,8 +78,12 @@
       </div>
       <?php
         print render($page['content_bottom']);
-        print render($page['footer']);
       ?>
     </div>
+  </div>
+  <div class="footer">
+    <?php
+        print render($page['footer']);
+    ?>
   </div>
 </div>
