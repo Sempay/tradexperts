@@ -81,7 +81,7 @@
       ?>
     </div>
   </div>
-  <div class="footer-location">
+  <div class="footer">
     <?php
         print render($page['footer']);
     ?>
