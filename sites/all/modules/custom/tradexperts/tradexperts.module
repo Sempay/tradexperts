@@ -31,3 +31,102 @@ function tradexperts_form_alter(&$form, &$form_state, $form_id) {
 			break;
 	}
 }
+
+/**
+ * Implements hook_block_info().
+ */
+function tradexperts_block_info() {
+	return array(
+		'tradexperts_slideshow' => array(
+			'info'  => t('Tradexperts Slideshow'),
+			'cache' => DRUPAL_NO_CACHE,
+		),
+	);
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function tradexperts_block_view($delta = '') {
+	$block = array();
+
+	switch ($delta) {
+		case 'tradexperts_slideshow':
+			$items = tradexperts_slideshow_get_items();
+
+			$block['content'] = array(
+				'#markup' => theme('tradexperts_slideshow', array(
+					'slides' => $items,
+				)),
+				'#attached' => array(
+					'js' => array(
+						drupal_get_path('module', 'tradexperts') . '/js/mobilyslider.js',
+						drupal_get_path('module', 'tradexperts') . '/js/tradexperts.slideshow.js',
+					),
+					'css' => array(
+						drupal_get_path('module', 'tradexperts') . '/css/tradexperts.slideshow.css',
+					),
+				),
+			);
+			break;
+	}
+
+	return $block;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function tradexperts_theme() {
+	return array(
+		'tradexperts_slideshow' => array(
+			'variables' => array(
+				'slider' => 'slider1',
+				'slides' => array(),
+			),
+			'path'     => drupal_get_path('module', 'tradexperts') . '/templates',
+			'template' => 'tradexperts-slideshow',
+		),
+	);
+}
+
+/**
+ * Returns items for slide show.
+ */
+function tradexperts_slideshow_get_items() {
+	$nodes = node_load_multiple(array(), array('type' => 'slideshow', 'status' => NODE_PUBLISHED));
+
+	$items = array();
+
+	foreach ($nodes as $node) {
+		$field_link = field_get_items('node', $node, 'field_link');
+		if (!empty($field_link[0]['url']) && !empty($field_link[0]['title'])) {
+			$link = l($field_link[0]['title'], $field_link[0]['url'], array('type' => 'external') + array('attributes' => $field_link[0]['attributes']));
+		}
+		else {
+			$link = '';
+		}
+		$field_background_image = field_get_items('node', $node, 'field_background_image');
+		if (!empty($field_background_image[0]['uri'])) {
+			$background_image = $field_background_image[0]['uri'];
+		}
+		else {
+			$background_image = '';
+		}
+		$field_sub_title=  field_get_items('node', $node, 'field_sub_title');
+		if (!empty($field_sub_title[0]['value'])) {
+			$sub_title = $field_sub_title[0]['value'];
+		}
+		else {
+			$sub_title = '';
+		}
+		$items[] = array(
+			'title'            => $node->title,
+			'link'             => $link,
+			'background_image' => $background_image,
+			'sub_title'        => $sub_title,
+		);
+	}
+
+	return $items;
+}
