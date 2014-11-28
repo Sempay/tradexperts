@@ -1,0 +1,15 @@
+name = Feature fields
+core = 7.x
+package = tradexperts
+version = 7.x-1.0
+project = feature_fields
+dependencies[] = features
+dependencies[] = taxonomy
+dependencies[] = text
+features[features_api][] = api:2
+features[field_base][] = body
+features[field_base][] = comment_body
+features[field_base][] = field_advisors_order
+features[field_base][] = field_shop_forex
+features_exclude[dependencies][taxonomy_vocabularies] = taxonomy_vocabularies
+project path = sites/all/modules/features
