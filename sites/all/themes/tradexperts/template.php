@@ -66,7 +66,6 @@ function tradexperts_preprocess_page(&$variables, $hook) {
  * @param $hook
  *   The name of the template being rendered ("node" in this case.)
  */
-/* -- Delete this line if you want to use this function
 function tradexperts_preprocess_node(&$variables, $hook) {
   $variables['sample_variable'] = t('Lorem ipsum.');
 
@@ -76,8 +75,9 @@ function tradexperts_preprocess_node(&$variables, $hook) {
   if (function_exists($function)) {
     $function($variables, $hook);
   }
+    unset($variables['content']['links']['node']['#links']['node-readmore']);
 }
-// */
+
 
 /**
  * Override or insert variables into the comment templates.
