@@ -1,0 +1,9 @@
+name = Feature: image styles
+core = 7.x
+package = tradexperts
+version = 7.x-1.0
+project = feature_image_styles
+features[features_api][] = api:2
+features[image][] = 31x32sc
+features_exclude[dependencies][image] = image
+project path = sites/all/modules/features

@@ -41,6 +41,10 @@ function tradexperts_block_info() {
 			'info'  => t('Tradexperts Slideshow'),
 			'cache' => DRUPAL_NO_CACHE,
 		),
+		'tradexperts_brokers' => array(
+			'info'  => t('Tradexperts Brokers'),
+			'cache' => DRUPAL_NO_CACHE,
+		),
 	);
 }
 
@@ -73,6 +77,10 @@ function tradexperts_block_view($delta = '') {
 				),
 			);
 			break;
+		case 'tradexperts_brokers':
+			$block['content'] = tradexperts_brokers_block();
+			$block['subject'] = t('Brokers');
+			break;
 	}
 
 	return $block;
@@ -90,6 +98,13 @@ function tradexperts_theme() {
 			),
 			'path'     => drupal_get_path('module', 'tradexperts') . '/templates',
 			'template' => 'tradexperts-slideshow',
+		),
+		'tradexperts_brokers' => array(
+			'variables' => array(
+				'brokers' => array(), 
+			),
+			'path'     => drupal_get_path('module', 'tradexperts') . '/templates',
+			'template' => 'tradexperts-brokers',
 		),
 	);
 }
@@ -133,4 +148,27 @@ function tradexperts_slideshow_get_items() {
 	}
 
 	return $items;
+}
+
+function tradexperts_brokers_block() {
+	$query = db_select('node', 'n')
+		->fields('n', array('title'));
+	$query->condition('n.type', 'brokers')
+		  ->condition('n.status', NODE_PUBLISHED);
+	$query->innerJoin('field_data_field_url_address', 'url_address', 'url_address.entity_id = n.nid AND url_address.bundle = :bundle AND url_address.entity_type = :entity_type', array(
+		':bundle'      => 'brokers',
+		':entity_type' => 'node',
+	));
+	$query->orderBy('n.created', 'DESC');
+	$query->addField('url_address', 'field_url_address_value', 'url_address');
+	$query->innerJoin('field_data_field_icon', 'icon', 'icon.entity_id = n.nid AND icon.bundle = :bundle AND icon.entity_type = :entity_type', array(
+		':bundle'      => 'brokers',
+		':entity_type' => 'node',
+	));
+	$query->innerJoin('file_managed', 'file', 'file.fid = icon.field_icon_fid');
+	$query->fields('file', array('uri'));
+
+	return theme('tradexperts_brokers', array(
+		'brokers' => $query->execute()->fetchAll(),
+	));
 }
