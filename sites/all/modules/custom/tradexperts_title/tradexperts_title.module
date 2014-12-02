@@ -1,0 +1,197 @@
+<?php
+/**
+ * Implements hook_menu().
+ */
+function tradexperts_title_menu() {
+  return array(
+    'tradexperts-title/metadata/%' => array(
+      'title'           => 'Edit metadata',
+      'page callback'   => 'tradexperts_title_metadata_page',
+      'page arguments'  => array('tradexperts_title_metadata_form'),
+      'access callback' => TRUE,
+      'type'            => MENU_CALLBACK,
+    ),
+  );
+}
+
+function tradexperts_title_metadata_load($path) {
+  $metadata = &drupal_static(__FUNCTION__);
+  if (isset($metadata[ $path ])) {
+    return $metadata[ $path ];
+  }
+  $query = db_select('tradexperst_title_metadata', 'm');
+  $query->fields('m');
+  $query->condition('path', $path);
+  $metadata[ $path ] = $query->execute()->fetchObject();
+  if (empty($metadata[ $path ])) {
+    $metadata[ $path ] = new stdClass();
+    $metadata[ $path ]->id = NULL;
+    $metadata[ $path ]->path = $path;
+    $metadata[ $path ]->title = '';
+    $metadata[ $path ]->h1 = '';
+    $metadata[ $path ]->description = '';
+    $metadata[ $path ]->keywords = '';
+  }
+  return $metadata[ $path ];
+}
+
+function tradexperts_title_metadata_page() {
+  $args = arg();
+  array_shift($args);
+  array_shift($args);
+  $path  = implode('/', $args);
+  if (drupal_valid_path($path)) {
+    return drupal_get_form('tradexperts_title_metadata_form', $path);
+  }
+
+  return MENU_NOT_FOUND;
+}
+
+function tradexperts_title_metadata_form($form, &$form_state, $path) {
+  $entry = tradexperts_title_metadata_load($path);
+  $form_state['storage']['path'] = $path;
+  $form['title'] = array(
+    '#type'          => 'textfield',
+    '#title'         => t('Title'),
+    '#default_value' => $entry->title,
+  );
+
+  $form['h1'] = array(
+    '#type'          => 'textfield',
+    '#title'         => t('H1 Title'),
+    '#default_value' => $entry->h1,
+  );
+
+  $form['description'] = array(
+    '#type'          => 'textarea',
+    '#title'         => t('Description'),
+    '#default_value' => $entry->description,
+  );
+
+  $form['keywords'] = array(
+    '#type'          => 'textfield',
+    '#title'         => t('Keywords'),
+    '#default_value' => $entry->keywords,
+  );
+
+  $form['actions'] = array(
+    '#type' => 'actions',
+  );
+
+  $form['actions']['save'] = array(
+    '#type'  => 'submit',
+    '#value' => t('Save'),
+  );
+
+  return $form;
+}
+
+function tradexperts_title_metadata_form_submit($form, &$form_state) {
+  $entry = array(
+    'title'       => $form_state['values']['title'],
+    'h1'          => $form_state['values']['h1'],
+    'description' => $form_state['values']['description'],
+    'keywords'    => $form_state['values']['keywords'],
+  );
+  $path = $form_state['storage']['path'];
+
+  $remove = TRUE;
+
+  foreach ($entry as $value) {
+    if ($value) {
+      $remove = FALSE;
+      break;
+    }
+  }
+
+  if (!$remove) {
+    db_merge('tradexperst_title_metadata')
+      ->key(array('path' => $path))
+      ->fields($entry)
+      ->execute();
+  }
+  else {
+    db_delete('tradexperst_title_metadata')
+      ->condition('path', $path)
+      ->execute();
+  }
+  $form_state['redirect'] = $path;
+  drupal_set_message(t('The configuration options have been saved.'));
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function tradexperts_title_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  if (!path_is_admin(current_path()) && !(arg(0) == 'tradexperts-title' && arg(1) == 'metadata')) {
+    if (!isset($data['tabs'][0])) {
+      $data['tabs'][0] = array('output' => array(), 'count' => 1);
+    }
+    $data['tabs'][0]['output'][] = array(
+      '#theme' => 'menu_local_task',
+      '#link'  => array(
+        'title'             => t('Edit metadata'),
+        'href'              => 'tradexperts-title/metadata/' . current_path(),
+        'localized_options' => array(
+          'attributes' => array(
+            'title' => t('Edit metadata'),
+          ),
+        ),
+      ),
+    );
+    $data['tabs'][0]['count']++;
+  }
+}
+
+/**
+ * Implements hook_html_head_alter().
+ */
+function tradexperts_title_html_head_alter(&$head_elements) {
+  $metadata = tradexperts_title_metadata_load(current_path());
+  if (!empty($metadata->description)) {
+    $head_elements['tradexperts_title_description'] = array(
+      '#type'       => 'html_tag',
+      '#tag'        => 'meta',
+      '#attributes' => array(
+        'name'    => 'description',
+        'content' => $metadata->description,
+      ),
+    );
+  }
+
+  if (!empty($metadata->keywords)) {
+    $head_elements['tradexperts_title_keywords'] = array(
+      '#type'       => 'html_tag',
+      '#tag'        => 'meta',
+      '#attributes' => array(
+        'name'    => 'keywords',
+        'content' => $metadata->keywords,
+      ),
+    );
+  }
+}
+
+/**
+ * Implements template_preprocess_html().
+ */
+function tradexperts_title_preprocess_html(&$variables) {
+  $metadata = tradexperts_title_metadata_load(current_path());
+  if (!empty($metadata->title)) {
+    $head_title = array(
+      'title' => strip_tags($metadata->title),
+      'name' => check_plain(variable_get('site_name', 'Drupal')),
+    );
+    $variables['head_title_array'] = $head_title;
+    $variables['head_title'] = implode(' | ', $head_title);
+  }
+}
+
+/**
+ * Implements template_preprocess_page().
+ */
+function tradexperts_title_preprocess_page(&$variables) {
+  $metadata = tradexperts_title_metadata_load(current_path());
+  if (!empty($metadata->h1)) {
+    $variables['title'] = strip_tags($metadata->h1);
+  }
+}

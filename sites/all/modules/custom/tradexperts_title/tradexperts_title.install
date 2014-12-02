@@ -1,0 +1,44 @@
+<?php
+/**
+ * Implements hook_schema().
+ */
+function tradexperts_title_schema() {
+  $schema = array();
+
+  $schema['tradexperst_title_metadata'] = array(
+    'fields' => array(
+      'path' => array(
+        'type'     => 'varchar',
+        'length'   => 255,
+        'not null' => TRUE,
+      ),
+      'title' => array(
+        'type'     => 'varchar',
+        'length'   => 255,
+        'not null' => FALSE,
+        'default'  => '',
+      ),
+      'h1' => array(
+        'type'     => 'varchar',
+        'length'   => 255,
+        'not null' => FALSE,
+        'default'  => '',
+      ),
+      'description' => array(
+        'type'     => 'varchar',
+        'length'   => 360,
+        'not null' => FALSE,
+        'default'  => '',
+      ),
+      'keywords' => array(
+        'type'     => 'varchar',
+        'length'   => 360,
+        'not null' => 360,
+        'default'  => '',
+      ),
+    ),
+    'primary key' => array('path'),
+  );
+
+  return $schema;
+}
