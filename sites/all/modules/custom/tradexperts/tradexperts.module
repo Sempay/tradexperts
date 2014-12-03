@@ -1,5 +1,20 @@
 <?php
 /**
+ * Implements hook_menu().
+ */
+function tradexperts_menu() {
+	return array(
+		'feedback' => array(
+			'title'           => 'Feedback',
+			'page callback'   => 'drupal_get_form',
+			'page arguments'  => array('tradexperts_callback_form'),
+			'access callback' => TRUE,
+			'type'            => MENU_CALLBACK,
+		),
+	);
+}
+
+/**
  * Implements hook_form_alter().
  */
 function tradexperts_form_alter(&$form, &$form_state, $form_id) {
@@ -45,6 +60,10 @@ function tradexperts_block_info() {
 			'info'  => t('Tradexperts Brokers'),
 			'cache' => DRUPAL_NO_CACHE,
 		),
+		'tradexperts_callback' => array(
+			'info'  => t('Tradexperts callback'),
+			'cache' => DRUPAL_NO_CACHE,
+		),
 	);
 }
 
@@ -80,6 +99,9 @@ function tradexperts_block_view($delta = '') {
 		case 'tradexperts_brokers':
 			$block['content'] = tradexperts_brokers_block();
 			$block['subject'] = t('Brokers');
+			break;
+		case 'tradexperts_callback':
+			$block['content'] = drupal_get_form('tradexperts_callback_form');
 			break;
 	}
 
@@ -171,4 +193,107 @@ function tradexperts_brokers_block() {
 	return theme('tradexperts_brokers', array(
 		'brokers' => $query->execute()->fetchAll(),
 	));
+}
+
+/**
+ * Returns form for callback.
+ */
+function tradexperts_callback_form($form, &$form_state) {
+	$form['number'] = array(
+		'#type'     => 'textfield',
+		'#title'    => t('Number of registered accounts'),
+		'#required' => TRUE,
+	);
+
+	$form['center'] = array(
+		'#type'    => 'radios',
+		'#title'   => t('Dealing center'),
+		'#options' => array(
+			'alpari'     => t('Alpari'),
+			'forex4you'  => t('Forex4you'),
+			'instaforex' => t('InstaForex'),
+			'roboforex'  => t('Roboforex'),
+		),
+		'#required' => TRUE,
+	);
+
+	$form['email'] = array(
+		'#type'    => 'textfield',
+		'#title'   => t('E-mail'),
+		'#required' => TRUE,
+	);
+
+	$form['message'] = array(
+		'#type'  => 'textarea',
+		'#title' => t('Message'),
+	);
+
+	$form['send'] = array(
+		'#type'  => 'submit',
+		'#value' => t('Send'),
+	);
+}
+
+function tradexperts_callback_form_validate($form, &$form_state) {
+	if (!empty($form_state['values']['email']) && !valid_email_address($form_state['values']['email'])) {
+		form_set_error('email', t('Email address is invalid'));
+	}
+}
+
+function tradexperts_callback_form_submit($form, &$form_state) {
+	tradexperts_send_feedback($form_state['values']);
+}
+
+function tradexperts_send_feedback($values) {
+	$module = 'tradexperts';
+	$key    = 'send_feedback';
+
+	$to       = variable_get('site_mail');
+	$from     = 'noreply@' . $_SERVER['SERVER_NAME'];
+	$language = language_default();
+	$send     = TRUE;
+
+	$result = drupal_mail($module, $key, $to, $language, $values, $from, $send);
+
+	if ($result['result']) {
+		drupal_set_message(t('Your message has been sent.'));
+	}
+	else {
+		drupal_set_message(t('There was a problem sending your message and it was not sent.'), 'error');
+	}
+}
+
+/**
+ * Implements hook_mail().
+ */
+function tradexperts_mail($key, &$message, $params) {
+	$options = array(
+		'langcode' => $message['language']->language,
+	);
+
+	switch ($key) {
+		case 'send_feedback':
+			$dealing_center = array(
+				'alpari'     => t('Alpari'),
+				'forex4you'  => t('Forex4you'),
+				'instaforex' => t('InstaForex'),
+				'roboforex'  => t('Roboforex'),
+			);
+			$message['subject'] = t('Order a license key');
+			$message['body'][] = t('Number of registered accounts: @number', array(
+				'@number' => $params['number'],
+			), $options);
+			$message['body'][] = t('Dealing center: @center', array(
+				'@center' => $dealing_center[ $params['center'] ],
+			), $options);
+			$message['body'][] = t('Email: @email', array(
+				'@email' => $params['email'],
+			), $options);
+			if (!empty(trim(strip_tags($params['message'])))) {
+				$message['body'][] = t('Message: @message', array(
+					'@message' => $params['message'],
+				), $options);
+			}
+			break;
+	}
 }
