@@ -232,6 +232,8 @@ function tradexperts_callback_form($form, &$form_state) {
 		'#type'  => 'submit',
 		'#value' => t('Send'),
 	);
+
+	return $form;
 }
 
 function tradexperts_callback_form_validate($form, &$form_state) {
