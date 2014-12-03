@@ -471,7 +471,7 @@ footer#footer {
 	-moz-border-radius: 14px;
 	-webkit-border-radius: 14px;
 	background-color: #000;
-	bottom: 2%;
+	bottom: 50px;
 	color: #fff;
 	cursor: pointer;
 	display: none; 
