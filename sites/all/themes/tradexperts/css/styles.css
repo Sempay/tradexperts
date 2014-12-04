@@ -535,3 +535,26 @@ footer#footer {
 	border-bottom-right-radius: 5px;
 	border: 1px solid #cdcdcd;
 }
+.top-button {
+	-moz-border-radius: 14px;
+	-webkit-border-radius: 14px;
+	background-color: #000;
+	bottom: 50px;
+	color: #fff;
+	cursor: pointer;
+	display: none; 
+	font-family: Arial,"MS Trebuchet",sans-serif;
+	font-size: 12pt;
+	font-size: 18px;
+	height: 25px;
+	line-height: 25px;
+	margin-left: -80px;
+	margin-top: -40px;
+	opacity: .8;
+	padding: 5px;
+	position: fixed;
+	right: 10px;
+	text-align: center;
+	width: 100px;
+	z-index: 100;
+}
