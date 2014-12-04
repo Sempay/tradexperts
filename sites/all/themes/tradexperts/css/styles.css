@@ -467,3 +467,71 @@ footer#footer {
 .field-item p {
 	margin-top: 17px;
 }
+.region-content-bottom {
+	clear: both;
+	overflow: hidden;
+	padding: 5px 13px;
+	text-align: center;
+}
+.block-tradexperts-category {
+	background-color: #ffffff;
+	display: inline-block;
+	margin-bottom: 7px;
+	text-align: left;
+	width: 300px;
+}
+.block-tradexperts-category .block-title {
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	font-family: 'RobotoCondensed';
+	font-size: 20px;
+	font-weight: bold;
+	height: 45px;
+	text-align: center;
+	text-transform: uppercase;
+	vertical-align: top;
+}
+.block-tradexperts-category .image-category img {
+	vertical-align: middle;
+}
+#block-tradexperts-category-tradexperts-cate-investment {
+	float: left;
+}
+#block-tradexperts-category-tradexperts-training {
+	margin: 0 auto;
+}
+#block-tradexperts-category-tradexperts-pamm-accounts {
+	float: right;
+}
+#block-tradexperts-category-tradexperts-cate-investment .block-title {
+	background-image: url(../images/category-investmrnt.png);
+}
+#block-tradexperts-category-tradexperts-training .block-title {
+	background-image: url(../images/training-category.png);
+}
+#block-tradexperts-category-tradexperts-pamm-accounts .block-title {
+	background-image: url(../images/Pamm_account-category.png);
+}
+.block-tradexperts-category .category-news-title {
+	color: #5db0fd;
+	display: inline-block;
+	font-family: 'RobotoCondensed';
+	font-size: 14px;
+	margin-left: -2px;
+}
+.block-tradexperts-category .category-news-title a {
+	border-bottom: 1px dotted #5db0fd;
+	text-decoration: none;
+}
+.block-tradexperts-category .category-news-picture {
+	display: inline-block;
+	margin: 4px 5px 5px 5px;
+}
+.block-tradexperts-category .image-category {
+	margin: 0px 5px;
+}
+.category-body-content {
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border: 1px solid #cdcdcd;
+}

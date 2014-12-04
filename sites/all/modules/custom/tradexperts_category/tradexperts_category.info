@@ -1,0 +1,4 @@
+name = tradexperts category
+description = module from blocks category 
+package = tradexperts
+core = 7.x
