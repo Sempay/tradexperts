@@ -141,7 +141,7 @@ header#header * {
   padding-right: 150px;
 }
 #content {
-	width: 722px;
+	width: 75%;
 	float: left;
 }
 #sidebar {
