@@ -154,7 +154,7 @@ function content_type_page_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_picture',
-    'label' => 'зображення',
+    'label' => 'Изображение',
     'required' => 0,
     'settings' => array(
       'alt_field' => 0,
@@ -222,7 +222,7 @@ function content_type_page_field_default_field_instances() {
   t('Магазин форекс');
   t('Советники на заказ');
   t('Содержимое');
-  t('зображення');
+  t('Изображение');
 
   return $field_instances;
 }
