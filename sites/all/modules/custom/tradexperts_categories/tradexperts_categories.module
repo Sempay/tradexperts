@@ -1,0 +1,93 @@
+<?php
+
+define("INVESTMENT_TID", "1");
+define("TRAINING_TID",    "2");
+define("PAMM_ACCOUNT_TID", "3");
+/**
+ * Implements hook_block_info().
+ */
+function tradexperts_categories_block_info(){
+  $blocks = array();
+  $blocks['tradexperts_cate_investment'] = array(
+    'info' => 'Investment',
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['tradexperts_training'] = array(
+    'info' => 'Training',
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['tradexperts_pamm_accounts'] = array(
+    'info' => 'PAMM accounts',
+    'cache' => DRUPAL_NO_CACHE,
+  );
+   return $blocks;
+}
+/**
+ * Implements hook_block_view().
+ */
+function tradexperts_categories_block_view($delta = ''){
+  $block = array();
+  switch ($delta) {
+    case 'tradexperts_cate_investment':
+      $select = categories_connect_databace(INVESTMENT_TID);
+      $block['subject'] = t('Investment');
+      $block['content'] = theme('tradexperts_categories', array('select' => $select));
+      break;
+
+    case 'tradexperts_training':
+      $select = categories_connect_databace(TRAINING_TID);
+      $block['subject'] = t('Training');
+      $block['content'] = theme('tradexperts_categories', array('select' => $select));
+      break;
+
+    case 'tradexperts_pamm_accounts':
+      $select = categories_connect_databace(PAMM_ACCOUNT_TID);
+      $block['subject'] = t('PAMM account');
+      $block['content'] = theme('tradexperts_categories', array('select' => $select));
+      break;
+    
+  }
+  return $block;
+}
+/**
+ * Implements hook_theme().
+ */
+function tradexperts_categories_theme() {
+  return array(
+    'tradexperts_categories' => array(
+      'variables' => array(
+        'select' => array(),
+      ),
+      'path'     => drupal_get_path('module', 'tradexperts_categories') . '/templates',
+      'template' => 'tradexperts-categories',
+    ),
+  );
+}
+/**
+ * Connect to databace.
+ */
+function categories_connect_databace($tid){
+  $categories_groups = &drupal_static(__FUNCTION__);
+  if (!empty($categories_groups)) {
+    return $categories_groups[$tid];
+  }
+  $query = db_select('node', 'n');
+  $query->innerJoin("field_data_field_category", "c", "n.nid = c.entity_id and c.bundle = 'page' and c.entity_type = 'node'");
+  $query->innerJoin("field_data_field_picture", "p", "n.nid = p.entity_id and p.bundle = 'page' and p.entity_type = 'node'");
+  $query->innerJoin("file_managed", "m", "p.field_picture_fid = m.fid");
+  $query->condition('n.type', 'page')
+        ->condition('c.field_category_tid', array(INVESTMENT_TID, TRAINING_TID, PAMM_ACCOUNT_TID), 'IN')
+        ->fields('m', array('uri'))
+        ->fields('c', array('field_category_tid'))
+        ->fields('n', array('title', 'nid'));
+  $select = $query->execute()->fetchAll();
+  $categories_groups = array(
+      INVESTMENT_TID    => array(),
+      TRAINING_TID      => array(),
+      PAMM_ACCOUNT_TID  => array(),
+      );
+    foreach ($select as $key => $value) {
+      $categories_groups[$value->field_category_tid][] = $value;
+    }
+    return $categories_groups[$tid];
+}

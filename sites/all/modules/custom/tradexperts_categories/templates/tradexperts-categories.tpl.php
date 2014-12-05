@@ -1,7 +1,7 @@
-<div class="category-body-content">
-<div class="image-category">
+<div class="categories-body-content">
+<div class="image-categories">
   <?php foreach ($select as $key => $value) { ?>
-  <div class="category-news-picture">
+  <div class="categories-news-picture">
     <?php
       $ways = array(
       	'style_name' => '100x52sc', 
@@ -10,7 +10,7 @@
       print theme('image_style', $ways);
      	?>
       </div>
-    <div class="category-news-title">
+    <div class="categories-news-title">
       <?php print l($value->title, 'node/' . $value->nid); ?>
     </div>
     <br>
