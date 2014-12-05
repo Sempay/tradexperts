@@ -9,15 +9,15 @@ define("PAMM_ACCOUNT_TID", 3);
 function tradexperts_categories_block_info(){
   $blocks = array();
   $blocks['tradexperts_cate_investment'] = array(
-    'info' => 'Investment',
+    'info' => t('Investment'),
     'cache' => DRUPAL_NO_CACHE,
   );
   $blocks['tradexperts_training'] = array(
-    'info' => 'Training',
+    'info' => t('Training'),
     'cache' => DRUPAL_NO_CACHE,
   );
   $blocks['tradexperts_pamm_accounts'] = array(
-    'info' => 'PAMM accounts',
+    'info' => t('PAMM accounts'),
     'cache' => DRUPAL_NO_CACHE,
   );
    return $blocks;
@@ -29,19 +29,19 @@ function tradexperts_categories_block_view($delta = ''){
   $block = array();
   switch ($delta) {
     case 'tradexperts_cate_investment':
-      $select = tradexperts_categories_sample_database(INVESTMENT_TID);
+      $select = tradexperts_categories_get_nodes_by_tid(INVESTMENT_TID);
       $block['subject'] = t('Investment');
       $block['content'] = theme('tradexperts_categories', array('select' => $select));
       break;
 
     case 'tradexperts_training':
-      $select = tradexperts_categories_sample_database(TRAINING_TID);
+      $select = tradexperts_categories_get_nodes_by_tid(TRAINING_TID);
       $block['subject'] = t('Training');
       $block['content'] = theme('tradexperts_categories', array('select' => $select));
       break;
 
     case 'tradexperts_pamm_accounts':
-      $select = tradexperts_categories_sample_database(PAMM_ACCOUNT_TID);
+      $select = tradexperts_categories_get_nodes_by_tid(PAMM_ACCOUNT_TID);
       $block['subject'] = t('PAMM account');
       $block['content'] = theme('tradexperts_categories', array('select' => $select));
       break;
@@ -64,9 +64,9 @@ function tradexperts_categories_theme() {
   );
 }
 /**
- * Sample node from the database.
+ * This function allows you to make a selection from the database node from id.
  */
-function tradexperts_categories_sample_database($tid){
+function tradexperts_categories_get_nodes_by_tid($tid){
   $categories_groups = &drupal_static(__FUNCTION__);
   if (!empty($categories_groups)) {
     return $categories_groups[$tid];
