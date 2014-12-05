@@ -7,7 +7,7 @@
       	'style_name' => '100x52sc', 
       	'path' => $value->uri,
       	);
-      print theme('image_style', $ways);
+      print l(theme('image_style', $ways), 'node/' . $value->nid, array('html' => TRUE));
      	?>
       </div>
     <div class="categories-news-title">
