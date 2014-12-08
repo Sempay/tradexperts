@@ -4,8 +4,8 @@
  */
 function tradexperts_menu() {
 	return array(
-		'feedback' => array(
-			'title'           => 'Feedback',
+		'getlicensekey' => array(
+			'title'           => 'Get license key',
 			'page callback'   => 'drupal_get_form',
 			'page arguments'  => array('tradexperts_callback_form'),
 			'access callback' => TRUE,
@@ -123,7 +123,7 @@ function tradexperts_theme() {
 		),
 		'tradexperts_brokers' => array(
 			'variables' => array(
-				'brokers' => array(), 
+				'brokers' => array(),
 			),
 			'path'     => drupal_get_path('module', 'tradexperts') . '/templates',
 			'template' => 'tradexperts-brokers',
