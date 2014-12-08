@@ -516,8 +516,11 @@ footer#footer {
 	color: #5db0fd;
 	display: inline-block;
 	font-family: 'RobotoCondensed';
-	font-size: 14px;
+	font-size: 13px;
+	line-height: 15px;
 	margin-left: -2px;
+	width: 170px;
+	vertical-align: middle;
 }
 .block-tradexperts-categories .categories-news-title a {
 	border-bottom: 1px dotted #5db0fd;
@@ -526,6 +529,7 @@ footer#footer {
 .block-tradexperts-categories .categories-news-picture {
 	display: inline-block;
 	margin: 4px 5px 5px 5px;
+	width: 100px;
 }
 .block-tradexperts-categories .image-categories {
 	margin: 0px 5px;
