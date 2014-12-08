@@ -52,4 +52,25 @@
     }
   };
 
+  Drupal.behaviors.tradexpertColorbox = {
+    attach: function() {
+      var $a;
+        $('img.colorbox').once('tradexpertColorbox', function () {
+          if ($(this).parents('a').length) {
+           $(this).parents('a').colorbox({width: '95%', height: '95%'});
+             $a = $('<a/>', {
+              href: $(this).attr('src')
+            });
+          }
+          else {
+            $a = $('<a/>', {
+              href: $(this).attr('src')
+            });
+            $a.colorbox({width: '95%', height: '95%'});
+            $(this).wrap($a);
+          }
+       });
+    }
+  };
+
 })(jQuery, Drupal, this, this.document);

@@ -6,13 +6,13 @@ stylesheets[all][] = system.menus.css
 stylesheets[all][] = system.messages.css
 stylesheets[all][] = system.theme.css
 stylesheets[all][] = css/styles.css
-
+stylesheets[all][] = css/colorbox.css
 regions[header]         = Header
 regions[highlighted]    = Highlighted
 regions[help]           = Help
 regions[content_top]    = Page top
 regions[content]        = Content
-regions[sidebar] 		= Sidebar
+regions[sidebar] 		    = Sidebar
 regions[content_bottom] = Page bottom
 regions[footer]         = Footer
 
@@ -38,4 +38,5 @@ settings[zen_html5_respond_meta][] = meta
 settings[zen_rebuild_registry]     = 1
 settings[zen_wireframes]           = 0
 
+scripts[] = js/jquery.colorbox-min.js
 scripts[] = js/script.js
