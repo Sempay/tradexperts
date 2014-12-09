@@ -1,8 +1,9 @@
 <?php
 
-define("INVESTMENT_TID", 1);
-define("TRAINING_TID",    2);
-define("PAMM_ACCOUNT_TID", 3);
+define('INVESTMENT_TID', 1);
+define('TRAINING_TID', 2);
+define('PAMM_ACCOUNT_TID', 3);
+
 /**
  * Implements hook_block_info().
  */
@@ -20,7 +21,7 @@ function tradexperts_categories_block_info(){
     'info' => t('PAMM accounts'),
     'cache' => DRUPAL_NO_CACHE,
   );
-   return $blocks;
+  return $blocks;
 }
 /**
  * Implements hook_block_view().
@@ -45,10 +46,11 @@ function tradexperts_categories_block_view($delta = ''){
       $block['subject'] = t('PAMM account');
       $block['content'] = theme('tradexperts_categories', array('select' => $select));
       break;
-    
+
   }
   return $block;
 }
+
 /**
  * Implements hook_theme().
  */
@@ -63,6 +65,7 @@ function tradexperts_categories_theme() {
     ),
   );
 }
+
 /**
  * This function allows you to make a selection from the database node from id.
  */
@@ -82,12 +85,12 @@ function tradexperts_categories_get_nodes_by_tid($tid){
         ->fields('n', array('title', 'nid'));
   $select = $query->execute()->fetchAll();
   $categories_groups = array(
-      INVESTMENT_TID    => array(),
-      TRAINING_TID      => array(),
-      PAMM_ACCOUNT_TID  => array(),
-      );
-    foreach ($select as $key => $value) {
-      $categories_groups[$value->field_category_tid][] = $value;
-    }
-    return $categories_groups[$tid];
+    INVESTMENT_TID    => array(),
+    TRAINING_TID      => array(),
+    PAMM_ACCOUNT_TID  => array(),
+  );
+  foreach ($select as $key => $value) {
+    $categories_groups[$value->field_category_tid][] = $value;
+  }
+  return $categories_groups[$tid];
 }

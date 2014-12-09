@@ -1,0 +1,39 @@
+<?php
+/**
+ * Implements hook_menu().
+ */
+function tradexperts_sitemap_menu() {
+  return array(
+    'sitemap' => array(
+      'title'           => 'Sitemap',
+      'page callback'   => 'tradexperts_sitemap_callback',
+      'access callback' => TRUE,
+      'type'            => MENU_CALLBACK,
+    ),
+  );
+}
+
+/**
+ * Callback of `Sitemap` page.
+ */
+function tradexperts_sitemap_callback() {
+  $links = array();
+  $nodes = tradexperts_sitemap_get_nodes();
+  foreach ($nodes as $node) {
+    $links[] = l($node->title, 'node/' . $node->nid);
+  }
+
+  return '<div id="sitemap"><div class="sitemap-item">' . implode('</div><div class="sitemap-item">', $links) . '</div></div>';
+}
+
+/**
+ * Returns array with nodes type of `page`.
+ */
+function tradexperts_sitemap_get_nodes() {
+  $query = db_select('node', 'n')
+    ->fields('n', array('nid', 'title'))
+    ->condition('n.status', NODE_PUBLISHED)
+    ->condition('n.type', 'page')
+    ->orderBy('n.created', 'DESC');
+  return $query->execute()->fetchAll();
+}
