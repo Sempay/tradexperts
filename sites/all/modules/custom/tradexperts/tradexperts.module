@@ -300,3 +300,12 @@ function tradexperts_mail($key, &$message, $params) {
 			break;
 	}
 }
+
+/**
+ * Implements hook_block_view_alter().
+ */
+function tradexperts_block_view_alter(&$data, $block) {
+	if ($block->module == 'poll') {
+		$data['content']['links'] = NULL;
+	}
+}
