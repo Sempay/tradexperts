@@ -61,6 +61,7 @@ header#header:after {
 }*/
 header#header > .header-content {
 	margin: 0 auto;
+	padding-left: 25px;
 	width: 955px;
 }
 header#header * {
@@ -304,7 +305,7 @@ form.user-login-block .links a {
 	background-image: url(../images/block-header-bg.png);
 	background-repeat: no-repeat;
 	color: #fff;
-	font-family: 'RobotoCondensed'; 
+	font-family: 'RobotoCondensed';
 	font-size: 22px;
 	font-weight: normal;
 	line-height: 40px;
@@ -322,7 +323,7 @@ form.user-login-block .links a {
 }
 #block-poll-recent .choices .title {
 	color: #3c3c3c;
-	font-family: 'RobotoCondensed'; 
+	font-family: 'RobotoCondensed';
 	font-size: 16px;
 	font-weight: normal;
 	line-height: 18px;
@@ -330,11 +331,11 @@ form.user-login-block .links a {
 }
 
 #poll-view-voting .form-item .form-radio {
-    display:none;            
+    display:none;
 }
 #poll-view-voting .form-item .form-radio + label {
 	color: #232323;
-	font-family: 'RobotoCondensed'; 
+	font-family: 'RobotoCondensed';
 	font-size: 15px;
 	font-weight: bold;
 	line-height: 29px;
@@ -546,7 +547,7 @@ footer#footer {
 	bottom: 50px;
 	color: #fff;
 	cursor: pointer;
-	display: none; 
+	display: none;
 	font-family: Arial,"MS Trebuchet",sans-serif;
 	font-size: 12pt;
 	font-size: 18px;
@@ -561,4 +562,8 @@ footer#footer {
 	text-align: center;
 	width: 100px;
 	z-index: 100;
+}
+#block-tradexperts-tradexperts-slideshow {
+	margin-left: 4px;
+	margin-top: -1px;
 }
