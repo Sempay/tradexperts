@@ -59,7 +59,6 @@ function tradexperts_preprocess_page(&$variables, $hook) {
     if (!empty($field_category[0]['tid'])) {
       $parents = taxonomy_get_parents_all($field_category[0]['tid']);
       $breadcrumbs = array();
-      $breadcrumbs[] = l(t('Home'), '<front>');
       foreach ($parents as $term) {
         $path_main_category = field_get_items('taxonomy_term', $term, 'field_main_category');
         if (!empty($path_main_category[0]['value'])) {
@@ -72,6 +71,8 @@ function tradexperts_preprocess_page(&$variables, $hook) {
           $breadcrumbs[] = l($term->name, $path);
         }
       }
+      $breadcrumbs = array_reverse($breadcrumbs);
+      array_unshift($breadcrumbs, l(t('Home'), '<front>'));
       drupal_set_breadcrumb($breadcrumbs);
     }
   }
