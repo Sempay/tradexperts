@@ -53,7 +53,29 @@ function tradexperts_preprocess_html(&$variables, $hook) {
  *   The name of the template being rendered ("page" in this case.)
  */
 function tradexperts_preprocess_page(&$variables, $hook) {
- drupal_add_js(array('tradexpertsWidgetId' => TRADEXPERTS_WIDGET_ID), 'setting');
+  drupal_add_js(array('tradexpertsWidgetId' => TRADEXPERTS_WIDGET_ID), 'setting');
+  if (!empty($variables['node']) && isset($variables['node']->field_category)) {
+    $field_category = field_get_items('node', $variables['node'], 'field_category');
+    if (!empty($field_category[0]['tid'])) {
+      $parents = taxonomy_get_parents_all(9);
+      array_shift($parents);
+      $breadcrumbs = array();
+      $breadcrumbs[] = l(t('Home'), '<front>');
+      foreach ($parents as $term) {
+        $path_main_category = field_get_items('taxonomy_term', $term, 'field_main_category');
+        if (!empty($path_main_category[0]['value'])) {
+          $path = $path_main_category[0]['value'];
+        }
+        else {
+          $path = 'taxonomy/term/' . $term->tid;
+        }
+        if (request_path() !== $path) {
+          $breadcrumbs[] = l($term->name, $path);
+        }
+      }
+      drupal_set_breadcrumb($breadcrumbs);
+    }
+  }
 
 }
 //
