@@ -64,9 +64,8 @@ function content_type_page_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
+        'type' => 'hidden',
         'weight' => 2,
       ),
       'teaser' => array(
@@ -101,9 +100,8 @@ function content_type_page_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
+        'type' => 'hidden',
         'weight' => 3,
       ),
       'teaser' => array(
@@ -137,12 +135,8 @@ function content_type_page_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'image',
-        'settings' => array(
-          'image_link' => '',
-          'image_style' => '',
-        ),
-        'type' => 'image',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 4,
       ),
       'teaser' => array(
@@ -188,9 +182,8 @@ function content_type_page_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
+        'type' => 'hidden',
         'weight' => 1,
       ),
       'teaser' => array(
@@ -218,11 +211,11 @@ function content_type_page_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Изображение');
   t('Категории');
   t('Магазин форекс');
   t('Советники на заказ');
   t('Содержимое');
-  t('Изображение');
 
   return $field_instances;
 }
