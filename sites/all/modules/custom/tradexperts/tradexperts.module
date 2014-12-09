@@ -1,10 +1,12 @@
 <?php
+
+define('TRADEXPERTS_WIDGET_ID', 747960);
 /**
  * Implements hook_menu().
  */
 function tradexperts_menu() {
 	return array(
-		'getlicensekey' => array(
+		'getlicensekey'   => array(
 			'title'           => 'Get license key',
 			'page callback'   => 'drupal_get_form',
 			'page arguments'  => array('tradexperts_callback_form'),
@@ -13,7 +15,6 @@ function tradexperts_menu() {
 		),
 	);
 }
-
 /**
  * Implements hook_form_alter().
  */
