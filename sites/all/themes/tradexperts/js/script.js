@@ -54,6 +54,27 @@
 
   Drupal.behaviors.tradexpertColorbox = {
     attach: function() {
+
+ var widget_id = Drupal.settings.tradexpertsWidgetId;
+_shcp =[{widget_id : widget_id}];
+var lang =(navigator.language || navigator.systemLanguage
+|| navigator.userLanguage ||"en")
+.substr(0,2).toLowerCase();
+var url ="widget.siteheart.com/widget/sh/"+ widget_id +"/"+ lang +"/widget.js";
+var hcc = document.createElement("script");
+hcc.type ="text/javascript";
+hcc.async =true;
+hcc.src =("https:"== document.location.protocol ?"https":"http")
++"://"+ url;
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hcc, s.nextSibling);
+
+
+      var s = document.createElement('script');
+      s.type = "text/javascript";
+      s.async = true;
+      s.src = 'http://widget.siteheart.com/widget/sh/747960/ru/widget.js';
+      $("script").first().before($(s));
       var $a;
         $('img.colorbox').once('tradexpertColorbox', function () {
           if ($(this).parents('a').length) {
