@@ -57,8 +57,7 @@ function tradexperts_preprocess_page(&$variables, $hook) {
   if (!empty($variables['node']) && isset($variables['node']->field_category)) {
     $field_category = field_get_items('node', $variables['node'], 'field_category');
     if (!empty($field_category[0]['tid'])) {
-      $parents = taxonomy_get_parents_all(9);
-      array_shift($parents);
+      $parents = taxonomy_get_parents_all($field_category[0]['tid']);
       $breadcrumbs = array();
       $breadcrumbs[] = l(t('Home'), '<front>');
       foreach ($parents as $term) {
