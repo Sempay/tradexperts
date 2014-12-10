@@ -1,6 +1,6 @@
 <?php
-
 define('TRADEXPERTS_WIDGET_ID', 747960);
+
 /**
  * Implements hook_menu().
  */
@@ -308,4 +308,13 @@ function tradexperts_block_view_alter(&$data, $block) {
 	if ($block->module == 'poll') {
 		$data['content']['links'] = NULL;
 	}
+}
+
+function tradexperts_init() {
+	// header('Content-type: text/html; charset=utf-8');
+	// $parents = taxonomy_get_parents_all(9);
+	// array_shift($parents);
+	// var_dump($parents);
+	// die;
+	// taxonomy_get_parents_all
 }
