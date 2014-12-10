@@ -74,7 +74,7 @@
     }
   };
 
-  Drupal.behaviors.tradexpertColorbox = {
+  Drupal.behaviors.tradexpertSiteHeart = {
     attach: function() {
       $('body').once('tradexpertSiteHeart', function () {
         var widget_id = Drupal.settings.tradexpertsWidgetId;
