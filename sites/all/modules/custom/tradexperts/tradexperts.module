@@ -1,5 +1,5 @@
 <?php
-define('TRADEXPERTS_WIDGET_ID', 747960);
+define('TRADEXPERTS_WIDGET_ID', 748447);
 
 /**
  * Implements hook_menu().
