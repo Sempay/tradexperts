@@ -734,3 +734,6 @@ footer#footer {
 .block-links-content table {
 	margin-bottom: 11px;
 }
+nav.breadcrumb a {
+	color: #0F5EA1;
+}
