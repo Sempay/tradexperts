@@ -76,7 +76,6 @@ function tradexperts_preprocess_page(&$variables, $hook) {
       drupal_set_breadcrumb($breadcrumbs);
     }
   }
-
 }
 //
 
@@ -97,7 +96,12 @@ function tradexperts_preprocess_node(&$variables, $hook) {
   if (function_exists($function)) {
     $function($variables, $hook);
   }
-    unset($variables['content']['links']['node']['#links']['node-readmore']);
+  unset($variables['content']['links']['node']['#links']['node-readmore']);
+
+  $variables['content']['google_stars'] = array(
+    '#markup' => tradexperts_theme_google_stars($variables['elements']['#node']),
+    '#weight' => 1000,
+  );
 }
 
 
@@ -152,3 +156,30 @@ function tradexperts_preprocess_block(&$variables, $hook) {
   //}
 }
 // */
+
+
+function tradexperts_theme_google_stars($node) {
+  if (module_exists('fivestar')) {
+    $field_rating = field_get_items('node', $node, 'field_rating');
+    if (isset($field_rating[0]['average'])) {
+      $votes = array(
+        20  => 1,
+        40  => 2,
+        60  => 3,
+        80  => 4,
+        100 => 5,
+      );
+      $rating   = isset($votes[0][ $field_rating[0]['average'] ]) ? $votes[0][ $field_rating[0]['average'] ] : 0;
+      $max_rate = 5;
+      $count    = isset($field_rating[0]['count']) ? $field_rating[0]['count'] : 0;
+      $html = '<div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">';
+      $html .= '<span itemprop="ratingValue">' . $rating . '</span>';
+      $html .= '<span itemprop="bestRating">' . $max_rate . '</span>';
+      $html .= '<span itemprop="reviewCount">' . $count . '</span>';
+      $html .= '</div>';
+
+      return '<div class="element-hidden">' . $html . '</div>';
+    }
+  }
+  return '';
+}
