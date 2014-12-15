@@ -173,6 +173,55 @@ function content_type_page_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-page-field_rating'
+  $field_instances['node-page-field_rating'] = array(
+    'bundle' => 'page',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'fivestar',
+        'settings' => array(
+          'expose' => 1,
+          'style' => 'average',
+          'text' => 'average',
+          'widget' => array(
+            'fivestar_widget' => 'sites/all/modules/contrib/fivestar/widgets/basic/basic.css',
+          ),
+        ),
+        'type' => 'fivestar_formatter_default',
+        'weight' => 5,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_rating',
+    'label' => 'Рейтинг',
+    'required' => 0,
+    'settings' => array(
+      'allow_clear' => 0,
+      'allow_ownvote' => 1,
+      'allow_revote' => 0,
+      'stars' => 5,
+      'target' => 'none',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'fivestar',
+      'settings' => array(),
+      'type' => 'exposed',
+      'weight' => 31,
+    ),
+  );
+
   // Exported field_instance: 'node-page-field_shop_forex'
   $field_instances['node-page-field_shop_forex'] = array(
     'bundle' => 'page',
@@ -214,6 +263,7 @@ function content_type_page_field_default_field_instances() {
   t('Изображение');
   t('Категории');
   t('Магазин форекс');
+  t('Рейтинг');
   t('Советники на заказ');
   t('Содержимое');
 
