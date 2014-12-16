@@ -156,7 +156,6 @@ header#header * {
 }
 #block-menu-menu-sidebar-menu .menu li {
 	list-style: none;
-	height: 36px;
 }
 #block-menu-menu-sidebar-menu .menu li a {
 	color: #4f4f4f;
@@ -425,7 +424,7 @@ form.user-login-block .links a {
 	margin-left: 12px;
 	vertical-align: top;
 }
-.front #main .node header{
+#main .node header {
 	background-color: #063560;
 	background-image: url(../images/news_header.png);
 	background-position: left;
