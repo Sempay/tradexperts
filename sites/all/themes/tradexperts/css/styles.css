@@ -167,38 +167,6 @@ header#header * {
 	list-style: none;
 	height: 36px;
 }
-#block-menu-menu-sidebar-menu .menu li.is-expanded {
-	height: auto;
-	margin-bottom: -12px;
-}
-#block-menu-menu-sidebar-menu .menu li.is-expanded ul {
-	margin-left: 15px;
-	margin-top: 0;
-}
-#block-menu-menu-sidebar-menu .menu li.is-expanded > ul {
-	margin-top: 5px;
-}
-#block-menu-menu-sidebar-menu .menu li.is-expanded ul li > ul li {
-	height: auto;
-}
-#block-menu-menu-sidebar-menu .menu li.is-expanded ul li > ul li:not(:first-child) {
-	margin-top: -5px;
-}
-#block-menu-menu-sidebar-menu .menu li.is-expanded ul li:last-child:after {
-	background: transparent;
-}
-#block-menu-menu-sidebar-menu .menu li.is-expanded ul li a {
-	font-size: 16px;
-}
-#block-menu-menu-sidebar-menu .menu li.is-expanded ul li ul li a {
-	font-size: 14px;
-}
-#block-menu-menu-sidebar-menu .menu li.is-expanded ul li a:before {
-	background: transparent;
-	content: '-';
-	margin-right: 0;
-	text-align: center;
-}
 #block-menu-menu-sidebar-menu .menu li a {
 	color: #4f4f4f;
 	font-family: 'RobotoCondensed';
@@ -215,9 +183,6 @@ header#header * {
 	margin-right: 6px;
 }
 #block-menu-menu-sidebar-menu .menu li a:hover {
-	color: #2773b5;
-}
-#block-menu-menu-sidebar-menu .menu li a.active {
 	color: #2773b5;
 }
 #block-menu-menu-sidebar-menu .menu li a:hover:before {
@@ -336,7 +301,7 @@ form.user-login-block .links a {
 	margin-left: -3px;
 }
 
-.block .block-title {
+.sidebars .block .block-title {
 	background-image: url(../images/block-header-bg.png);
 	background-repeat: no-repeat;
 	color: #fff;
@@ -517,12 +482,17 @@ footer#footer {
 	width: 300px;
 }
 .block-tradexperts-categories .block-title {
+	background-repeat: no-repeat;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
+	color: #fff;
 	font-family: 'RobotoCondensed';
 	font-size: 20px;
 	font-weight: bold;
 	height: 45px;
+	line-height: 40px;
+	margin-bottom: -1px;
+	padding-left: 8px;
 	text-align: center;
 	text-transform: uppercase;
 	vertical-align: top;
@@ -769,13 +739,38 @@ footer#footer {
 .block-links-content table {
 	margin-bottom: 11px;
 }
-nav.breadcrumb a {
-	color: #0F5EA1;
+#block-block-4 table {
+	width: 100%;
 }
-.front article.node .field-name-body:after {
-	content: ".";
-	display: block;
-	height: 0;
-	clear: both;
-	visibility: hidden;
+#block-block-4 table td {
+	width: 33%;
+}
+#block-block-4 .title {
+	text-align: center;
+}
+#block-block-9 table {
+	width: 100%;
+}
+#block-block-9 td {
+	width: 20%;
+	text-align: center;
+}
+#block-block-9 h2 {
+	margin-top: 0px;
+}
+#block-block-8 table {
+	width: 100%;
+}
+#block-block-8 td {
+	width: 25%;
+	text-align: center;
+}
+#block-block-8 td img {
+	width: 120px;
+}
+.node-page .block-block {
+	background: #ffffff;
+	border: 1px solid #dddddd;
+	border-radius: 5px;
+	padding: 5px;
 }
