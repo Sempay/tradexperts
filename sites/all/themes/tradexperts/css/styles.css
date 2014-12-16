@@ -758,7 +758,7 @@ form.user-login-block .links a {
 	background: #ffffff;
 	border: 1px solid #dddddd;
 	border-radius: 5px;
-	padding: 5px;
+	padding: 0px 10px;
 }
 .front article.node .field-name-body:after {
 	content: ".";
@@ -815,4 +815,36 @@ footer#footer {
 	padding: 0;
 	height: 133px;
 	width: 1280px;
+}
+#block-menu-menu-sidebar-menu .menu li.is-expanded {
+	height: auto;
+	margin-bottom: -12px;
+}
+#block-menu-menu-sidebar-menu .menu li.is-expanded ul {
+	margin-left: 15px;
+	margin-top: 0;
+}
+#block-menu-menu-sidebar-menu .menu li.is-expanded > ul {
+	margin-top: 5px;
+}
+#block-menu-menu-sidebar-menu .menu li.is-expanded ul li > ul li {
+	height: auto;
+}
+#block-menu-menu-sidebar-menu .menu li.is-expanded ul li > ul li:not(:first-child) {
+	margin-top: -5px;
+}
+#block-menu-menu-sidebar-menu .menu li.is-expanded ul li:last-child:after {
+	background: transparent;
+}
+#block-menu-menu-sidebar-menu .menu li.is-expanded ul li a {
+	font-size: 16px;
+}
+#block-menu-menu-sidebar-menu .menu li.is-expanded ul li ul li a {
+	font-size: 14px;
+}
+#block-menu-menu-sidebar-menu .menu li.is-expanded ul li a:before {
+	background: transparent;
+	content: '-';
+	margin-right: 0;
+	text-align: center;
 }
