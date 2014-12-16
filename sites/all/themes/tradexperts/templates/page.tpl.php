@@ -11,6 +11,8 @@
 <div id="page">
 
   <header class="header" id="header" role="banner">
+    <div class="full-line"></div>
+    <div class="steps-bg"></div>
     <div class="header-content clearfix">
       <?php if ($logo): ?>
         <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" class="header__logo" id="logo"><img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" class="header__logo-image" /></a>
@@ -32,6 +34,8 @@
 
       <?php print render($page['header']); ?>
     </div>
+    <div class="steps-bg"></div>
+    <div class="full-line"></div>
   </header>
   <div id="page-content-wrapper" class="clearfix">
     <div id="page-content">
@@ -82,8 +86,10 @@
     </div>
   </div>
   <div class="footer">
+    <div class="full-line"></div>
     <?php
         print render($page['footer']);
     ?>
+    <div class="full-line"></div>
   </div>
 </div>
