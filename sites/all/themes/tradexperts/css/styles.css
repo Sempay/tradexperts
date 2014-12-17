@@ -87,7 +87,7 @@ header#header * {
 #header ul.menu li ul {
 	position: absolute;
 	left: 0;
-	z-index: 1;
+	z-index: 3;
 	background: transparent;
 	width: 100%;
 	display: none;
@@ -117,6 +117,7 @@ header#header ul.menu li.expanded ul li a,
 header#header ul.menu li.expanded ul li {
 	line-height: 45px;
 	margin-left: 0;
+	padding-top: 1px;
 }
 #header ul.menu li ul li ul {
 	display: none;
