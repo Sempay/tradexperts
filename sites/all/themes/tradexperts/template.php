@@ -88,7 +88,6 @@ function tradexperts_preprocess_page(&$variables, $hook) {
  *   The name of the template being rendered ("node" in this case.)
  */
 function tradexperts_preprocess_node(&$variables, $hook) {
-  $variables['sample_variable'] = t('Lorem ipsum.');
 
   // Optionally, run node-type-specific preprocess functions, like
   // tradexperts_preprocess_node_page() or tradexperts_preprocess_node_story().
@@ -102,6 +101,7 @@ function tradexperts_preprocess_node(&$variables, $hook) {
     '#markup' => tradexperts_theme_google_stars($variables['elements']['#node']),
     '#weight' => 1000,
   );
+  $variables['content']['links']['hypercomments'] = NULL;
 }
 
 
