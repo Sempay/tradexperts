@@ -1,0 +1,159 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  hypercomments.admin.inc: n/a
+#  hypercomments.module: n/a
+#  hypercomments.info: n/a
+#  hypercomments.install: n/a
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Drupal HC\n"
+"POT-Creation-Date: 2013-01-17 13:23+0200\n"
+"PO-Revision-Date: 2013-01-17 17:31+0300\n"
+"Last-Translator: neman <neman1989@yandex.ru>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: hypercomments.admin.inc:24
+msgid "Login with Google"
+msgstr "Войти через Google"
+
+#: hypercomments.admin.inc:35
+msgid "Admin"
+msgstr "Админ"
+
+#: hypercomments.admin.inc:42
+msgid "Settings"
+msgstr "Настройки"
+
+#: hypercomments.admin.inc:52
+msgid "Node Types"
+msgstr "Типы узлов"
+
+#: hypercomments.admin.inc:53
+msgid "Apply comments to only the following node types."
+msgstr "Применить комментарии только к следующим типам узлов."
+
+#: hypercomments.admin.inc:59
+msgid "Location"
+msgstr "Расположение"
+
+#: hypercomments.admin.inc:60
+msgid "Display the HyperComments comments in the given location. When \"Block\" is selected, the comments will appear in the <a href=\"@hypercomments\">HyperComments Comments block</a>."
+msgstr ""
+
+#: hypercomments.admin.inc:63
+msgid "Content Area"
+msgstr "Область контента"
+
+#: hypercomments.admin.inc:68
+msgid "Weight"
+msgstr ""
+
+#: hypercomments.admin.inc:69
+msgid "When the comments are displayed in the content area, you can change the position at which they will be shown."
+msgstr "Когда комментарии отображаются в области контента, вы можете изменить их положение"
+
+#: hypercomments.admin.inc:81
+msgid "Export"
+msgstr "Экспорт"
+
+#: hypercomments.admin.inc:83
+msgid "You can export the comments from Drupal to HyperComments."
+msgstr "Вы можете экспортировать комментарии из Drupal в HyperComments."
+
+#: hypercomments.admin.inc:87;88
+msgid "Export comments"
+msgstr "Экспорт комментариев"
+
+#: hypercomments.module:14
+msgid "Comment on a specific word or text fragment with <a href=\"@hypercomments\">HyperComments</a>."
+msgstr ""
+
+#: hypercomments.module:15
+msgid "Installation"
+msgstr "Установка"
+
+#: hypercomments.module:16
+msgid "Register your site information at <a href=\"http://hypercomments.com\">HyperComments</a>"
+msgstr ""
+
+#: hypercomments.module:17
+msgid "In the <a href=\"@configuration\">HyperComments configuration</a>, set the domain to what you registered with HyperComments, and what node types you would like to have comments"
+msgstr ""
+
+#: hypercomments.module:18
+msgid "Visit the <a href=\"@permissions\">permissions</a>, and set which users you would like to have the ability to view HyperComments threads (recommended for role)"
+msgstr ""
+
+#: hypercomments.module:21
+msgid "The following provides the general configuration options for the <a href=\"@hypercomments\">HyperComments</a> comment web service."
+msgstr "Параметры конфигурации для <a href=\"@hypercomments\">HyperComments</a> веб-сервис комментариев"
+
+#: hypercomments.module:31
+msgid "Administer HyperComments"
+msgstr ""
+
+#: hypercomments.module:32
+msgid "Perform administrative actions with HyperComments."
+msgstr ""
+
+#: hypercomments.module:35
+msgid "View HyperComments comments"
+msgstr ""
+
+#: hypercomments.module:36
+msgid "Allows access to view HyperComments comments."
+msgstr ""
+
+#: hypercomments.module:217
+msgid "Comments"
+msgstr "Комментарии"
+
+#: hypercomments.module:47
+#: hypercomments.info:0
+msgid "HyperComments"
+msgstr ""
+
+#: hypercomments.module:48
+msgid "Provides configuration options for the HyperComments comment system."
+msgstr ""
+
+#: hypercomments.module:55;65;75;85;95
+msgid "HC API"
+msgstr ""
+
+#: hypercomments.module:56
+msgid "Save WidgetId."
+msgstr ""
+
+#: hypercomments.module:66
+msgid "HC notify"
+msgstr ""
+
+#: hypercomments.module:76
+msgid "get_nodes"
+msgstr ""
+
+#: hypercomments.module:86
+msgid "make_export"
+msgstr ""
+
+#: hypercomments.module:96
+msgid "delete_xml"
+msgstr ""
+
+#: hypercomments.install:20
+msgid "You must <a href=\"@configuration\">configure the plugin</a> to enable HyperComments."
+msgstr "Вы должны <a href=\"@configuration\">настроить плагин</a> для работы HyperComments."
+
+#: hypercomments.info:0
+msgid "Comment on a specific word or text fragment with HyperComments."
+msgstr ""
+
