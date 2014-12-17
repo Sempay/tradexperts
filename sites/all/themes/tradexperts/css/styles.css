@@ -190,7 +190,7 @@ header#header * {
 	height: 2px;
 	display: inline-block;
 	position: relative;
-	top: -10px;
+	top: -5px;
 	left: -3px;
 }
 
@@ -877,4 +877,10 @@ nav.breadcrumb a {
 .page-node #main article > header {
 	background: transparent;
 	height: 0;
+}
+.page__title {
+	font-family: 'RobotoCondensed';
+	color: #313131;
+	font-weight: bold;
+	font-size: 35px;
 }
