@@ -135,7 +135,7 @@ header#header * {
 }
 #content {
 	float: left;
-	min-width: 740px;
+	min-width: 730px;
 	margin-right: 1%;
 	width: 74%;
 }
