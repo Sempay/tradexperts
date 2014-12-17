@@ -79,21 +79,68 @@ header#header * {
 }
 #header ul.menu li {
 	display: inline-block;
-	height: 46px;
+	height: auto;
 	list-style: none;
 	vertical-align: top;
+	position: relative;
 }
-#header ul.menu li:first-child {
+#header ul.menu li ul {
+	position: absolute;
+	left: 0;
+	z-index: 1;
+	background: transparent;
+	width: 100%;
+	display: none;
+}
+#header ul.menu li:hover > ul {
+	display: block;
+}
+#header ul.menu li:hover > ul li ul {
+	left: 100%;
+	top: 0;
+	margin-left: 1px;
+}
+#header ul.menu li ul li {
+	display: list-item;
+}
+header#header ul.menu li.expanded ul li a,
+#header ul.menu li ul li a.active,
+#header ul.menu li ul li a:hover {
+	background: #244777;
+	padding: 0;
+	width: 100%;
+	text-align: center;
+}
+#header ul.menu li ul li:before {
+	display: none;
+}
+header#header ul.menu li.expanded ul li {
+	line-height: 45px;
+	margin-left: 0;
+}
+#header ul.menu li ul li ul {
+	display: none;
+}
+#header ul.menu li.first {
 	margin-left: 2px;
 }
-#header ul.menu li:first-child a {
+#header ul.menu li.first a {
+	padding-left: 20px;
 	border-radius: 6px 0 0 4px;
 	margin-left: 1px;
 	padding-left: 20px;
 }
-#header ul.menu li:last-child a {
+#header ul.menu li.last a {
 	border-radius: 0 6px 4px 0;
 	padding-right: 22px;
+}
+header#header ul.menu li > ul li.first a,
+header#header ul.menu li ul li ul li.first a {
+	border-radius: 6px 6px 0 0;
+}
+header#header ul.menu li > ul li.last a,
+header#header ul.menu li ul li ul li.last a {
+	border-radius: 0 0 6px 6px;
 }
 #header ul.menu li + li:before {
 	background: url(../images/header-menu-link-separator.png);
@@ -109,17 +156,24 @@ header#header * {
 	display: inline-block;
 	font-family: 'RobotoCondensed';
 	font-size: 100%;
-	height: 37px;
+	height: auto;
 	margin-right: -4px;
 	padding: 0 9px;
 	text-decoration: none;
 }
-#header ul.menu li a:hover {
+#header ul.menu li a:hover,
+#header ul.menu li:hover a,
+#header ul.menu li a.active {
 	background: url(../images/header-menu-link-hover-center.png);
 	color: #0ec1ff;
 }
-
-
+#header ul.menu li:hover li a {
+	color: #fff;
+}
+#header ul.menu li li a:hover,
+#header ul.menu li li a.active {
+	color: #0ec1ff;
+}
 #page-content {
   background: url(../images/bg.png);
   border-radius: 9px;
