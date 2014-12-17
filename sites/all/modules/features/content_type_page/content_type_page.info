@@ -1,7 +1,7 @@
 name = Content type: page
 core = 7.x
 package = tradexperts
-version = 7.x-1.2
+version = 7.x-1.3
 project = content_type_page
 dependencies[] = entityreference
 dependencies[] = feature_fields
@@ -27,5 +27,5 @@ features_exclude[field_base][field_advisors_order] = field_advisors_order
 features_exclude[field_base][field_category_2] = field_category_2
 features_exclude[field_base][field_rating] = field_rating
 features_exclude[field_instance][node-page-field_category_2] = node-page-field_category_2
-mtime = 1418201048
+mtime = 1418644135
 project path = sites/all/modules/features

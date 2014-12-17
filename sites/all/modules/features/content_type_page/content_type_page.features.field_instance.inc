@@ -188,7 +188,7 @@ function content_type_page_field_default_field_instances() {
           'style' => 'average',
           'text' => 'average',
           'widget' => array(
-            'fivestar_widget' => 'sites/all/modules/contrib/fivestar/widgets/basic/basic.css',
+            'fivestar_widget' => 'sites/all/modules/contrib/fivestar/widgets/oxygen/oxygen.css',
           ),
         ),
         'type' => 'fivestar_formatter_default',
