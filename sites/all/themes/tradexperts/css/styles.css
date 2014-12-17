@@ -877,3 +877,9 @@ nav.breadcrumb a {
 	background: transparent;
 	height: 0;
 }
+.page__title {
+	font-family: 'RobotoCondensed';
+	color: #313131;
+	font-weight: bold;
+	font-size: 35px;
+}
