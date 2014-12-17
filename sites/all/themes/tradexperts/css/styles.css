@@ -133,20 +133,21 @@ header#header * {
   padding-right: 150px;
 }
 #content {
-	width: 75%;
 	float: left;
+	margin-right: 1%;
+	width: 74%;
 }
 #sidebar {
 	float: left;
-	width: 220px;
 	margin-left: -7px;
+	width: 220px;
 }
 #sidebar > section.region {
 	margin-top: -26px;
 }
 #content-top {
-	width: 722px;
 	float: left;
+	width: 722px;
 }
 #main {
 	padding-top: 0;
@@ -163,8 +164,8 @@ header#header * {
 #block-menu-menu-sidebar-menu .menu li a {
 	color: #4f4f4f;
 	font-family: 'RobotoCondensed';
-	text-decoration: none;
 	font-size: 18px;
+	text-decoration: none;
 }
 #block-menu-menu-sidebar-menu .menu li a:before {
 	content: ' ';
