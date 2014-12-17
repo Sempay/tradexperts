@@ -847,3 +847,18 @@ footer#footer {
 	margin-right: 0;
 	text-align: center;
 }
+
+/* Stars */
+.fivestar-oxygen div.fivestar-widget .star,
+.fivestar-oxygen div.fivestar-widget .star a,
+.fivestar-oxygen div.fivestar-widget div.hover a,
+.fivestar-oxygen div.fivestar-widget-static .star,
+.fivestar-oxygen div.fivestar-widget-static .star span.on,
+.fivestar-oxygen div.fivestar-widget-static .star span.off {
+	width: 32px;
+	height: 33px;
+	background-image: url(../images/stars.png);
+}
+div.fivestar-widget div.on a {
+	background-position: 0 -64px;
+}
