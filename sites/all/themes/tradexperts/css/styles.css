@@ -51,9 +51,11 @@ header#header > .header-content {
 	background-repeat: no-repeat;
 	height: 90px;
 	margin: 0 auto;
-	padding-left: 167px;
+	padding-left: 140px;
 	padding-top: 43px;
-	width: 1113px;
+	max-width: 1049px;
+	width: 1049px;
+	min-width: 990px;
 }
 header#header * {
 	outline: none !important;
@@ -183,6 +185,7 @@ header#header ul.menu li ul li ul li.last a {
   min-width: 975px;
   padding: 5px 8px;
   width: 100%;
+  position: relative;
 }
 #page-content-wrapper {
   padding-left: 150px;
@@ -200,7 +203,7 @@ header#header ul.menu li ul li ul li.last a {
 	width: 220px;
 }
 #sidebar > section.region {
-	margin-top: -26px;
+	margin-top: -22px;
 }
 #content-top {
 	float: left;
@@ -625,7 +628,9 @@ article.node .field-name-body:after {
 	z-index: 100;
 }
 #block-tradexperts-tradexperts-slideshow {
-	margin-left: 4px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 700px;
 	margin-top: -1px;
 }
 .tradexperts-icon {
@@ -872,6 +877,7 @@ article.node .field-name-body:after {
 .footer {
 	padding: 0;
 	width: 100%;
+	min-width: 1265px;
 	height: 132px;
 	margin-top: 1px;
 	position: relative;
@@ -884,7 +890,10 @@ footer#footer {
 	margin: 0 auto;
 	padding: 0;
 	height: 133px;
-	width: 1280px;
+	width: 100%;
+	max-width: 1280px;
+	margin-top: 20px;
+	min-width: 1265px;
 }
 #block-menu-menu-sidebar-menu .menu li.is-expanded {
 	height: auto;
