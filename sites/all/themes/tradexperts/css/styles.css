@@ -442,11 +442,12 @@ form.user-login-block .links a {
 	margin-bottom: 20px;
 	width: 96.7%;
 }
-.front article.node .field-name-body {
+article.node .field-name-body {
 	background: #ffffff;
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
 	border: 1px solid #dddddd;
+	margin-bottom: 20px;
 }
 .field-item {
 	color: #585252;
