@@ -136,7 +136,8 @@ header#header * {
 #content {
 	float: left;
 	min-width: 740px;
-	width: 75%;
+	margin-right: 1%;
+	width: 74%;
 }
 #sidebar {
 	float: left;
@@ -147,8 +148,8 @@ header#header * {
 	margin-top: -26px;
 }
 #content-top {
-	width: 722px;
 	float: left;
+	width: 722px;
 }
 #main {
 	padding-top: 0;
@@ -165,8 +166,8 @@ header#header * {
 #block-menu-menu-sidebar-menu .menu li a {
 	color: #4f4f4f;
 	font-family: 'RobotoCondensed';
-	text-decoration: none;
 	font-size: 18px;
+	text-decoration: none;
 }
 #block-menu-menu-sidebar-menu .menu li a:before {
 	content: ' ';
