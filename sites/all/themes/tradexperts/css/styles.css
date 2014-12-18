@@ -969,3 +969,10 @@ nav.breadcrumb a {
 	font-family: 'RobotoCondensed';
 	color: #313131;
 }
+.node-links {
+	color: #585252;
+	font-family: 'RobotoCondensed';
+}
+.node-links-forex {
+	margin-bottom: 15px;
+}

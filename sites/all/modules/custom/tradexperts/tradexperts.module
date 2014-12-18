@@ -5,11 +5,17 @@ define('TRADEXPERTS_WIDGET_ID', 748447);
  * Implements hook_menu().
  */
 function tradexperts_menu() {
-	return array(
+  return array(
 		'getlicensekey'   => array(
 			'title'           => 'Get license key',
 			'page callback'   => 'drupal_get_form',
 			'page arguments'  => array('tradexperts_callback_form'),
+			'access callback' => TRUE,
+			'type'            => MENU_CALLBACK,
+		),
+		'page-404'   => array(
+			'title'           => 'Page Not Found',
+			'page callback'   => 'tradexperts_not_found_page',
 			'access callback' => TRUE,
 			'type'            => MENU_CALLBACK,
 		),
@@ -375,6 +381,14 @@ function tradexperts_init() {
 }
 
 /**
+ * Function returns the page 404 "Page Not Found".
+ */
+function tradexperts_not_found_page() {
+	$message_not_found = t('Page not found');
+	return $message_not_found;
+}
+
+/**
  * Implements hook_node_view().
  */
 function tradexperts_node_view($node, $view_mode, $langcode) {
@@ -390,6 +404,14 @@ function tradexperts_node_view($node, $view_mode, $langcode) {
 						),
 					),
 					'#weight' => 5.5,
+				);
+				$message = '<div class="node-links node-links-google">';
+				$message .= t('Article Writer - !url', array('!url' => l('Google', 'https://plus.google.com/110568275264740848988?rel=author', array('attributes' => array('target' => '_blank')))));
+				$message .= '</div><div class="node-links node-links-forex">';
+				$message .= t('See more useful information - !url', array('!url' => l(t('Advisors for Forex Market'), '<front>'))) . '</div>';
+				$node->content['node_links'] = array(
+					'#markup' =>	$message,
+					'#weight' => 4.5,
 				);
 			}
 			break;
