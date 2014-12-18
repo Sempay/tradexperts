@@ -958,3 +958,11 @@ nav.breadcrumb a {
 	font-weight: bold;
 	font-size: 35px;
 }
+.share-block {
+	margin: 10px auto;
+	text-align: center;
+}
+.share-block .share-label {
+	font-family: 'RobotoCondensed';
+	color: #313131;
+}
