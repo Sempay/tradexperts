@@ -27,8 +27,8 @@ body {
 	background: #244777;
 }
 #page {
-	width: 100%;
 	max-width: 100%;
+	width: 100%;
 }
 a {
 	color: #3aa5ff;
@@ -38,22 +38,24 @@ a:hover {
 	text-decoration: underline;
 }
 header#header {
-	padding: 0;
-	width: 100%;
 	height: 132px;
 	margin-top: 1px;
+	padding: 0;
 	position: relative;
+	width: 100%;
 }
 header#header > .header-content {
-	margin: 0 auto;
 	background-color: #214575;
 	background-image: url(../images/header-bg.png);
-	background-repeat: no-repeat;
 	background-position: center center;
-	padding-left: 167px;
-	padding-top: 43px;
+	background-repeat: no-repeat;
 	height: 90px;
-	width: 1113px;
+	margin: 0 auto;
+	padding-left: 140px;
+	padding-top: 43px;
+	max-width: 1049px;
+	width: 1049px;
+	min-width: 990px;
 }
 header#header * {
 	outline: none !important;
@@ -72,61 +74,118 @@ header#header * {
 #header ul.menu {
 	background: url(../images/header-menu-bg.png);
 	height: 46px;
+	line-height: 38px;
+	margin-top: 0;
 	padding: 0;
 	width: 705px;
-	margin-top: 0;
-	line-height: 38px;
 }
 #header ul.menu li {
 	display: inline-block;
+	height: auto;
 	list-style: none;
 	vertical-align: top;
-	height: 46px;
+	position: relative;
 }
-#header ul.menu li:first-child {
+#header ul.menu li ul {
+	position: absolute;
+	left: 0;
+	z-index: 3;
+	background: transparent;
+	width: 100%;
+	display: none;
+}
+#header ul.menu li:hover > ul {
+	display: block;
+}
+#header ul.menu li:hover > ul li ul {
+	left: 100%;
+	top: 0;
+	margin-left: 1px;
+}
+#header ul.menu li ul li {
+	display: list-item;
+}
+header#header ul.menu li.expanded ul li a,
+#header ul.menu li ul li a.active,
+#header ul.menu li ul li a:hover {
+	background: #244777;
+	padding: 0;
+	width: 100%;
+	text-align: center;
+}
+#header ul.menu li ul li:before {
+	display: none;
+}
+header#header ul.menu li.expanded ul li {
+	line-height: 45px;
+	margin-left: 0;
+	padding-top: 1px;
+}
+#header ul.menu li ul li ul {
+	display: none;
+}
+#header ul.menu li.first {
 	margin-left: 2px;
 }
-#header ul.menu li:first-child a {
+#header ul.menu li.first a {
 	padding-left: 20px;
 	border-radius: 6px 0 0 4px;
 	margin-left: 1px;
+	padding-left: 20px;
 }
-#header ul.menu li:last-child a {
+#header ul.menu li.last a {
 	border-radius: 0 6px 4px 0;
 	padding-right: 22px;
 }
+header#header ul.menu li > ul li.first a,
+header#header ul.menu li ul li ul li.first a {
+	border-radius: 6px 6px 0 0;
+}
+header#header ul.menu li > ul li.last a,
+header#header ul.menu li ul li ul li.last a {
+	border-radius: 0 0 6px 6px;
+}
 #header ul.menu li + li:before {
-	content: ' ';
 	background: url(../images/header-menu-link-separator.png);
-	width: 2px;
+	content: ' ';
 	display: inline-block;
 	height: 37px;
-	vertical-align: top;
 	margin-left: -2px;
+	vertical-align: top;
+	width: 2px;
 }
 #header ul.menu li a {
-	font-family: 'RobotoCondensed';
 	color: #FFFFFF;
-	text-decoration: none;
 	display: inline-block;
-	height: 37px;
-	padding: 0 9px;
-	margin-right: -4px;
+	font-family: 'RobotoCondensed';
 	font-size: 100%;
+	height: auto;
+	margin-right: -4px;
+	padding: 0 9px;
+	text-decoration: none;
 }
-#header ul.menu li a:hover {
+#header ul.menu li a:hover,
+#header ul.menu li:hover a,
+#header ul.menu li a.active {
 	background: url(../images/header-menu-link-hover-center.png);
 	color: #0ec1ff;
 }
-
-
+#header ul.menu li:hover li a {
+	color: #fff;
+}
+#header ul.menu li li a:hover,
+#header ul.menu li li a.active {
+	color: #0ec1ff;
+}
 #page-content {
-  padding: 5px 8px;
-  margin: 0;
-  width: 100%;
   background: url(../images/bg.png);
   border-radius: 9px;
   margin-top: 5px;
+  margin: 0;
+  min-width: 975px;
+  padding: 5px 8px;
+  width: 100%;
+  position: relative;
 }
 #page-content-wrapper {
   padding-left: 150px;
@@ -134,6 +193,7 @@ header#header * {
 }
 #content {
 	float: left;
+	min-width: 730px;
 	margin-right: 1%;
 	width: 74%;
 }
@@ -143,7 +203,7 @@ header#header * {
 	width: 220px;
 }
 #sidebar > section.region {
-	margin-top: -26px;
+	margin-top: -22px;
 }
 #content-top {
 	float: left;
@@ -450,6 +510,13 @@ article.node .field-name-body {
 	border: 1px solid #dddddd;
 	margin-bottom: 20px;
 }
+article.node .field-name-body:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
 .field-item {
 	color: #585252;
 	font-family: 'RobotoCondensed';
@@ -561,7 +628,9 @@ article.node .field-name-body {
 	z-index: 100;
 }
 #block-tradexperts-tradexperts-slideshow {
-	margin-left: 4px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 700px;
 	margin-top: -1px;
 }
 .tradexperts-icon {
@@ -808,6 +877,7 @@ article.node .field-name-body {
 .footer {
 	padding: 0;
 	width: 100%;
+	min-width: 1265px;
 	height: 132px;
 	margin-top: 1px;
 	position: relative;
@@ -820,7 +890,10 @@ footer#footer {
 	margin: 0 auto;
 	padding: 0;
 	height: 133px;
-	width: 1280px;
+	width: 100%;
+	max-width: 1280px;
+	margin-top: 20px;
+	min-width: 1265px;
 }
 #block-menu-menu-sidebar-menu .menu li.is-expanded {
 	height: auto;
@@ -884,4 +957,12 @@ nav.breadcrumb a {
 	color: #313131;
 	font-weight: bold;
 	font-size: 35px;
+}
+.share-block {
+	margin: 10px auto;
+	text-align: center;
+}
+.share-block .share-label {
+	font-family: 'RobotoCondensed';
+	color: #313131;
 }

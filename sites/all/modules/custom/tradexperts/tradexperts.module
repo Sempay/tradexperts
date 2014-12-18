@@ -332,3 +332,24 @@ function tradexperts_not_found_page() {
 	$message_not_found = t('Page not found');
 	return $message_not_found;
 }
+
+/**
+ * Implements hook_node_view().
+ */
+function tradexperts_node_view($node, $view_mode, $langcode) {
+	switch ($view_mode) {
+		case 'full':
+			if ($node->type == 'page') {
+				$label = '<div class="share-block"><div class="share-label">' . t('Like this?! Share with your friends!') . '</div>';
+				$node->content['share_buttons'] = array(
+					'#markup'   => $label . '<div class="yashare-auto-init" data-yashareL10n="ru"data-yashareQuickServices="yaru,vkontakte,facebook,twitter,odnoklassniki,moimir,gplus" data-yashareTheme="counter"></div></div>',
+					'#attached' => array(
+						'js' => array(
+							'//yastatic.net/share/share.js' => array('type' => 'external'),
+						),
+					),
+					'#weight' => 5.5,
+				);
+			}
+			break;
+	}
