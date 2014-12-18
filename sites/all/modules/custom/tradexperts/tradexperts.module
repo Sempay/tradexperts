@@ -5,11 +5,17 @@ define('TRADEXPERTS_WIDGET_ID', 748447);
  * Implements hook_menu().
  */
 function tradexperts_menu() {
-	return array(
+  return array(
 		'getlicensekey'   => array(
 			'title'           => 'Get license key',
 			'page callback'   => 'drupal_get_form',
 			'page arguments'  => array('tradexperts_callback_form'),
+			'access callback' => TRUE,
+			'type'            => MENU_CALLBACK,
+		),
+		'page-404'   => array(
+			'title'           => 'Page Not Found',
+			'page callback'   => 'tradexperts_not_found_page',
 			'access callback' => TRUE,
 			'type'            => MENU_CALLBACK,
 		),
@@ -317,6 +323,14 @@ function tradexperts_init() {
 	// var_dump($parents);
 	// die;
 	// taxonomy_get_parents_all
+}
+
+/**
+ * Function returns the page 404 "Page Not Found".
+ */
+function tradexperts_not_found_page() {
+	$message_not_found = t('Page not found');
+	return $message_not_found;
 }
 
 /**
