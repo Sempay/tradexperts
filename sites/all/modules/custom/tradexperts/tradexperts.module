@@ -425,9 +425,9 @@ function tradexperts_node_view($node, $view_mode, $langcode) {
  */
 function tradexperts_css_generate() {
 
-  $css = '';
-  $result = db_select('menu_links', 'ml')->fields('ml', array('mlid', 'options'))->execute()->fetchAll();
-  $pos = variable_get('menu_icons_position', 'left');
+  $css      = '';
+  $result   = db_select('menu_links', 'ml')->fields('ml', array('mlid', 'options'))->execute()->fetchAll();
+  $pos      = variable_get('menu_icons_position', 'left');
   $absolute = variable_get('menu_icons_absolute_links', FALSE);
 
   foreach ($result as $item) {
@@ -458,17 +458,8 @@ function tradexperts_css_generate() {
 			$info       = image_get_info($image_path);
 			$info_hover = image_get_info($image_hover_path);
 
-      if ($absolute) {
-        $image_url = file_create_url($image_path);
-        $image_hover_url = file_create_url($image_hover_path);
-      }
-      else {
-        $wrapper = file_stream_wrapper_get_instance_by_scheme(file_uri_scheme($image_path));
-        $image_url = '/' . $wrapper->getDirectoryPath() . '/' . file_uri_target($image_path);
-
-        $wrapper_hover = file_stream_wrapper_get_instance_by_scheme(file_uri_scheme($image_hover_path));
-        $image_hover_url = '/' . $wrapper_hover->getDirectoryPath() . '/' . file_uri_target($image_hover_path);
-      }
+      $image_url = file_create_url($image_path);
+      $image_hover_url = file_create_url($image_hover_path);
 
       $size = $pos == 'right' || $pos == 'left' ? $info['width'] : $info['height'];
       // Support private filesystem
