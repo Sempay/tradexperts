@@ -231,17 +231,20 @@ header#header ul.menu li ul li ul li.last a {
 	content: ' ';
 	width: 14px;
 	height: 13px;
-	background: url(../images/sidebar-link-star.png);
+
 	display: inline-block;
 	margin-left: -6px;
 	margin-right: 6px;
+}
+#block-menu-menu-sidebar-menu .menu li a:not(.menu_icon):before {
+	background: url(../images/sidebar-link-star.png);
 }
 #block-menu-menu-sidebar-menu .menu li a:hover,
 #block-menu-menu-sidebar-menu .menu li a.active {
 	color: #2773b5;
 }
-#block-menu-menu-sidebar-menu .menu li a:hover:before,
-#block-menu-menu-sidebar-menu .menu li a.active:before {
+#block-menu-menu-sidebar-menu .menu li a:not(.menu_icon):hover:before,
+#block-menu-menu-sidebar-menu .menu li a:not(.menu_icon).active:before {
 	background-position: 0 -37px;
 }
 #block-menu-menu-sidebar-menu .menu li:after {

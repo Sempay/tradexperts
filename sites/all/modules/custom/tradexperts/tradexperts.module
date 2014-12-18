@@ -45,7 +45,48 @@ function tradexperts_form_alter(&$form, &$form_state, $form_id) {
 
 			$form['links']['#markup'] = '<div class="links">' . l(t('Registration'), 'user/register') . ' ' . l(t('Forgot password'), 'user/password') . '</div>';
 			break;
+		case 'menu_edit_item':
+			$form['icon']['icon_hover_upload'] = array(
+				'#type'      => 'file',
+				'#title'     => t('Upload a new icon image for hover action'),
+				'#maxlength' => 41,
+	    );
+	    $form['#submit'][] = 'tradexperts_menu_icons_form_submit';
+			break;
 	}
+}
+
+function tradexperts_menu_icons_form_submit($form, &$form_state) {
+	$validate = array(
+    'file_validate_is_image' => array(),
+  );
+
+  $directory_path = menu_icons_directory_path();
+  file_prepare_directory($directory_path, FILE_CREATE_DIRECTORY);
+
+  // Check for a new uploaded icon, and use that instead.
+  if ($file = file_save_upload('icon_hover_upload', $validate)) {
+    $parts = pathinfo($file->filename);
+    $filename = $directory_path . '/menu_icon_hover_' . $form_state['values']['mlid'] . '.' . $parts['extension'];
+    file_unmanaged_copy($file->uri, $filename, FILE_EXISTS_REPLACE);
+
+    // Flush image style generated images
+    image_path_flush($filename);
+
+    $path = $filename;
+  }
+
+  $options = unserialize(db_query('SELECT options FROM {menu_links} WHERE mlid = :mlid', array(':mlid' => $form_state['values']['mlid']))->fetchField());
+  $options['menu_icon']['path_hover'] = $path;
+
+  db_update('menu_links')
+  ->fields(array(
+    'options' => serialize($options),
+  ))
+  ->condition('mlid', $form_state['values']['mlid'])
+  ->execute();
+
+  tradexperts_css_generate();
 }
 
 /**
@@ -129,6 +170,19 @@ function tradexperts_theme() {
 			'path'     => drupal_get_path('module', 'tradexperts') . '/templates',
 			'template' => 'tradexperts-brokers',
 		),
+    'tradexperts_menu_icons_css_item' => array(
+			'variables' => array(
+				'mlid'       => NULL,
+				'path'       => NULL,
+				'path_hover' => NULL,
+				'size'       => NULL,
+				'height'     => NULL,
+				'pos'        => NULL,
+				'source'     => NULL,
+			),
+			'template'  => 'tradexperts-menu-icons-css-item',
+			'path'      => drupal_get_path('module', 'tradexperts') . '/templates',
+    ),
 	);
 }
 
@@ -310,13 +364,14 @@ function tradexperts_block_view_alter(&$data, $block) {
 	}
 }
 
+/**
+ * Implements hook_init().
+ */
 function tradexperts_init() {
-	// header('Content-type: text/html; charset=utf-8');
-	// $parents = taxonomy_get_parents_all(9);
-	// array_shift($parents);
-	// var_dump($parents);
-	// die;
-	// taxonomy_get_parents_all
+	$cssfile = 'public://css/tradexperts-menu-icons.css';
+  if (variable_get('menu_icons_use_css', TRUE) && file_exists($cssfile)){
+    drupal_add_css($cssfile);
+  }
 }
 
 /**
@@ -338,5 +393,106 @@ function tradexperts_node_view($node, $view_mode, $langcode) {
 				);
 			}
 			break;
+	}
+}
+
+/**
+ * Build CSS based on menu IDs
+ *
+ * @return A string with the CSS
+ */
+function tradexperts_css_generate() {
+
+  $css = '';
+  $result = db_select('menu_links', 'ml')->fields('ml', array('mlid', 'options'))->execute()->fetchAll();
+  $pos = variable_get('menu_icons_position', 'left');
+  $absolute = variable_get('menu_icons_absolute_links', FALSE);
+
+  foreach ($result as $item) {
+    $options = unserialize($item->options);
+
+    if (isset($options['menu_icon']) && $options['menu_icon']['enable'] && !empty($options['menu_icon']['path']) && file_exists($options['menu_icon']['path'])) {
+
+			$image_path       = $options['menu_icon']['path'];
+			$image_hover_path = $options['menu_icon']['path_hover'];
+			$image_style      = (isset($options['menu_icon']['image_style']) && !empty($options['menu_icon']['image_style'])) ? $options['menu_icon']['image_style'] : NULL;
+
+      if ($image_style) {
+				$source_uri       = $image_path;
+				$source_hover_uri = $image_hover_path;
+				$image_path       = image_style_path($image_style, $source_uri);
+				$image_hover_path = image_style_path($image_style, $source_hover_uri);
+
+        if (!file_exists($image_path)) {
+          image_style_create_derivative(image_style_load($image_style), $source_uri, $image_path);
+        }
+
+        if (!file_exists($image_hover_path)) {
+          image_style_create_derivative(image_style_load($image_style), $source_hover_uri, $image_hover_path);
+        }
+      }
+
+      // Retrieve the image dimensions
+			$info       = image_get_info($image_path);
+			$info_hover = image_get_info($image_hover_path);
+
+      if ($absolute) {
+        $image_url = file_create_url($image_path);
+        $image_hover_url = file_create_url($image_hover_path);
+      }
+      else {
+        $wrapper = file_stream_wrapper_get_instance_by_scheme(file_uri_scheme($image_path));
+        $image_url = '/' . $wrapper->getDirectoryPath() . '/' . file_uri_target($image_path);
+
+        $wrapper_hover = file_stream_wrapper_get_instance_by_scheme(file_uri_scheme($image_hover_path));
+        $image_hover_url = '/' . $wrapper_hover->getDirectoryPath() . '/' . file_uri_target($image_hover_path);
+      }
+
+      $size = $pos == 'right' || $pos == 'left' ? $info['width'] : $info['height'];
+      // Support private filesystem
+      $css .= theme('tradexperts_menu_icons_css_item', array('mlid' => $item->mlid, 'path' => $image_url, 'path_hover' => $image_hover_url, 'size' => $size, 'height' => $info['height'], 'pos' => $pos, 'source' => $source_uri));
+    }
+  }
+  $csspath = 'public://css';
+  if (!empty($css)) {
+    file_prepare_directory($csspath, FILE_CREATE_DIRECTORY);
+    file_unmanaged_delete($csspath . '/tradexperts-menu-icons.css');
+    file_unmanaged_save_data($css, $csspath . '/tradexperts-menu-icons.css', FILE_EXISTS_REPLACE);
+  }
+  else {
+    file_unmanaged_delete($csspath . '/tradexperts-menu-icons.css');
+  }
+}
+
+/**
+ * Implements hook_flush_caches().
+ */
+function tradexperts_flush_caches() {
+  tradexperts_css_generate();
+}
+
+/**
+ * Implements template_preprocess_menu_tree().
+ */
+function tradexperts_menu_link($variables) {
+  $output   = '';
+  $element  = $variables['element'];
+  $sub_menu = '';
+
+  if ($element['#below']) {
+    $sub_menu = drupal_render($element['#below']);
+  }
+  $link = l($element['#title'], $element['#href'], $element['#localized_options']);
+  $output = '<li' . drupal_attributes($element['#attributes']) . '>' . $link . $sub_menu . "</li>\n";
+
+  return $output;
+}
+
+/**
+ * Implements hook_css_alter().
+ */
+function tradexperts_css_alter(&$css) {
+	if (isset($css['public://css/menu_icons.css'])) {
+		unset($css['public://css/menu_icons.css']);
 	}
 }
