@@ -350,6 +350,14 @@ function tradexperts_node_view($node, $view_mode, $langcode) {
 					),
 					'#weight' => 5.5,
 				);
+				$message = '<div class="node-links node-links-google">';
+				$message .= t('Article Writer - !url', array('!url' => l('Google', 'https://plus.google.com/110568275264740848988?rel=author')));
+				$message .= '</div><div class="node-links node-links-forex">';
+				$message .= t('See more useful information - !url', array('!url' => l(t('Advisors for Forex Market'), '<front>'))) . '</div>';
+				$node->content['node_links'] = array(
+					'#markup' =>	$message,
+					'#weight' => 4.5,
+				);
 			}
 			break;
 	}
