@@ -257,7 +257,9 @@ header#header ul.menu li ul li ul li.last a {
 	top: -5px;
 	left: -3px;
 }
-
+#block-menu-menu-sidebar-menu .menu li.expanded:after {
+  top: -25px;
+}
 form.user-login-block label {
 	color: #a1a1a1;
 	font-family: 'RobotoCondensed';
@@ -610,6 +612,7 @@ article.node .field-name-body:after {
 .top-button {
 	-moz-border-radius: 14px;
 	-webkit-border-radius: 14px;
+	border-radius: 14px;
 	background-color: #000;
 	bottom: 50px;
 	color: #fff;
