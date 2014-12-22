@@ -1,0 +1,283 @@
+<?php
+
+/**
+ * @file
+ * The HyperComments Drupal module.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function hypercomments_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#hypercomments':
+        $output = '<p>'. t('Comment on a specific word or text fragment with <a href="@hypercomments">HyperComments</a>.', array('@hypercomments' => 'http://hypercomments.com')) .'</p>';
+        $output.= '<h3>'. t('Installation') .'</h3>';
+        $output.= '<ol><li>'. t('Register your site information at <a href="http://hypercomments.com">HyperComments</a>') .'</li>';
+        $output.= '<li>'. t('In the <a href="@configuration">HyperComments configuration</a>, set the domain to what you registered with HyperComments, and what node types you would like to have comments', array('@configuration' => url('admin/config/services/hypercomments'))) .'</li>';
+        $output.= '<li>'. t('Visit the <a href="@permissions">permissions</a>, and set which users you would like to have the ability to view HyperComments threads (recommended for role)', array('@permissions' => url('admin/people/permissions', array('fragment' => 'module-hypercomments')))) .'</li></ol>';
+        return $output;
+    case 'admin/config/services/hypercomments':
+        return '<p>'. t('The following provides the general configuration options for the <a href="@hypercomments">HyperComments</a> comment web service.', array('@hypercomments' => 'http://hypercomments.com')) .'</p>';
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function hypercomments_permission() {
+  return array(
+    'administer hypercomments' => array(
+      'title' => t('Administer HyperComments'),
+      'description' => t('Perform administrative actions with HyperComments.'),
+    ),
+    'view hypercomments comments' => array(
+      'title' => t('View HyperComments comments'),
+      'description' => t('Allows access to view HyperComments comments.')
+    )
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function hypercomments_menu() {
+  $items = array();
+  $items['admin/config/services/hypercomments'] = array(
+    'title' => 'HyperComments',
+    'description' => 'Provides configuration options for the HyperComments comment system.',
+    'access arguments' => array('administer hypercomments'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('hypercomments_admin_settings'),
+    'file' => 'hypercomments.admin.inc',
+  );
+  $items['admin/config/services/hypercomments/save_wid'] = array(
+    'title' => 'HC API',
+    'description' => 'Save WidgetId.',
+    'access callback' => 'user_access',
+    'access arguments' => array('access content'), // or another permission
+    //'page callback' => 'drupal_get_form',
+    'page arguments' => array('hypercomments_admin_savewid'),
+    'file' => 'hypercomments.admin.inc',
+    'type' => MENU_CALLBACK,
+  );
+  $items['admin/config/services/hypercomments/notify'] = array(
+    'title' => 'HC API',
+    'description' => 'HC notify',
+    'access callback' => 'user_access',
+    'access arguments' => array('access content'), // or another permission
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('hypercomments_admin_notify'),
+    'file' => 'hypercomments.admin.inc',
+    'type' => MENU_CALLBACK,
+  );
+  $items['admin/config/services/hypercomments/get_nodes'] = array(
+    'title' => 'HC API',
+    'description' => 'get_nodes',
+    'access callback' => 'user_access',
+    'access arguments' => array('access content'), // or another permission
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('hypercomments_admin_get_nodes'),
+    'file' => 'hypercomments.admin.inc',
+    'type' => MENU_CALLBACK,
+  );
+  $items['admin/config/services/hypercomments/make_export'] = array(
+    'title' => 'HC API',
+    'description' => 'make_export',
+    'access callback' => 'user_access',
+    'access arguments' => array('access content'), // or another permission
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('hypercomments_admin_make_export'),
+    'file' => 'hypercomments.admin.inc',
+    'type' => MENU_CALLBACK,
+  );
+  $items['admin/config/services/hypercomments/delete_xml'] = array(
+    'title' => 'HC API',
+    'description' => 'delete_xml',
+    'access callback' => 'user_access',
+    'access arguments' => array('access content'), // or another permission
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('hypercomments_admin_delete_xml'),
+    'file' => 'hypercomments.admin.inc',
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+/**
+ * Implements hook_element_info().
+ */
+function hypercomments_element_info() {
+  $types['hypercomments'] = array(
+    '#hypercomments' => array(),
+    '#theme_wrappers' => array('hypercomments_noscript', 'container'),
+    '#attributes' => array('id' => 'hypercomments_widget'),
+    '#post_render' => array('hypercomments_element_post_render'),
+  );
+  return $types;
+}
+/**
+ * Implements hook_element_info().
+ */
+function hypercomments_seo($nid){
+  $sql = "SELECT c.*, t2.comment_body_value, u.name, u.picture FROM comment as c
+          INNER JOIN users u ON u.uid = c.uid
+          LEFT JOIN field_data_comment_body as t2 ON (c.cid = t2.entity_id) WHERE c.nid = $nid ORDER BY c.cid DESC";
+  $all_comments = db_query($sql);
+  
+  $output = theme('hc_list_comments', array('all_comments'=>$all_comments));
+  return $output;
+}
+/**
+ * Render HC comments
+ */
+function hypercomments_element_post_render($children, &$element) {
+  $node_id = arg(1);
+  $domain = str_replace('https://','',str_replace('http://','',str_replace('www.','', $GLOBALS['base_url'])));
+  $xid = $domain.'/?q=node/'.$node_id;
+
+  $hypercomments = array(
+    'wid'   => variable_get('hypercomments_wid'),
+    'lang'  => get_language(),
+    'debug' => variable_get('hypercomments_debug'),
+    'xid'   => $xid
+  );
+
+  $auth = get_auth();
+  if ($auth) {
+    $hypercomments['auth'] = $auth;
+  }
+
+  $element['#attached']['js'] = array(
+    drupal_get_path('module', 'hypercomments') . '/hypercomments.js' => array(),
+    array(
+      'type' => 'setting',
+      'data' => array(
+        'hypercomments' => $hypercomments,
+      ),
+    ),
+  );
+  $seo_comment = hypercomments_seo($node_id);
+  return $children.$seo_comment;
+}
+/**
+ * Implements hook_node_load().
+ */
+function hypercomments_node_load($nodes, $types) {
+  $hctypes = variable_get('hypercomments_nodetypes', array());
+ 
+  foreach ($nodes as &$node) {
+    if (!empty($hctypes[$node->type])) {
+      $node->hypercomments = array('status' => 1);  
+    }
+  }
+}
+/**
+ * Implements hook_node_view().
+ */
+function hypercomments_node_view($node, $view_mode) {
+  
+  if (isset($node->hypercomments)  && user_access('view hypercomments comments')) {
+    switch ($view_mode) {
+      case 'full':
+        // Inject hypercomments into the node object.
+        switch (variable_get('hypercomments_location', 'content_area')) {
+          case 'content_area':
+            // Inject into the node content.
+            $node->content['hypercomments'] = array(
+              '#type' => 'hypercomments',
+              '#hypercomments' => '$node->hypercomments',
+              '#weight' => variable_get('hypercomments_weight', 50),
+            );
+            break;
+        }
+        break;
+      case 'teaser':
+        // Display the hypercomments link.
+        $links['hypercomments_count'] = array(
+          'title' => t('Comments'),
+          'href' => $GLOBALS['base_url'].'/?q=node/'.$node->nid,
+          //'fragment' => 'hypercomments_widget',
+          'attributes' => array(
+          ),
+        );
+        $node->content['links']['hypercomments'] = array(
+          '#theme' => 'links',
+          '#links' => $links,
+          '#attributes' => array(
+            'class' => array('links', 'inline'),
+          ),
+        );
+
+        // Attach hypercomments.js
+        $node->content['links']['#attached']['js'][] = drupal_get_path('module', 'hypercomments') . '/hypercomments.js';
+        $node->content['links']['#attached']['js'][] = array(
+          'data' => array('hypercomments_count' => array( 
+                                                      'wid'  => (int)variable_get('hypercomments_wid'),
+                                                      'lang' => get_language(),
+                                                      'debug' => variable_get('hypercomments_debug'),
+                                                  )),
+          'type' => 'setting',
+        );
+        break;
+    }
+  }
+}
+/**
+ * Gel language of Drupal
+ */
+function get_language() {
+  global $language;
+  if(in_array($language->language, array('en','ru','ua','de','fr')))
+  {
+    $lang = $language->language;
+  }else{
+    $lang = 'en';
+  } 
+  return $lang;
+}
+/**
+ * User Synchronization
+ */
+function get_auth() {
+  global $user;
+  if ($user->uid > 0) {
+    $user_info = array(
+            'nick'        => $user->name,
+            'id'          => $user->uid,
+            'email'       => $user->mail,
+            'profile_url' => url('user/' . $user->uid, array(
+                                'absolute' => TRUE,
+                              ))
+        );
+
+    $user_picture_default = variable_get('user_picture_default', '');
+    if (isset($user->picture) && !empty($user->picture) && is_numeric($user->picture) && $file = file_load($user->picture)) {
+        $user_info['avatar'] = !empty($file->uri) ? $file->uri : NULL;
+    }
+    elseif (!empty($user_picture_default)) {
+        $user_info['avatar'] = variable_get('user_picture_default', '');
+    }
+    if (isset($user_info['avatar'])) {
+        $user_info['avatar'] = file_create_url($user_info['avatar']);
+    }
+
+    $secret = variable_get('hypercomments_secret_key');
+    $time   = time();    
+    $base64 = base64_encode(json_encode($user_info));    
+    $sign   = md5($secret . $base64 . $time);
+    $auth = $base64 . "_" . $time . "_" . $sign;
+    return $auth;
+  }else {
+    return false;
+  }
+
+}
+
+function hypercomments_theme(){
+  return array(
+    'hc_list_comments' => array(
+      'template' => 'hc_list_comments'
+    )
+  );
+}
+

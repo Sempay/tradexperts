@@ -10,6 +10,18 @@
 	font-weight: bold;
 	src: url(fonts/RobotoCondensed/RobotoCondensed-Bold.ttf) format("truetype");
 }
+@font-face {
+	font-family: 'Cuprum';
+	font-style: normal;
+	font-weight: normal;
+	src: url(fonts/Cuprum/Cuprum-Regular.ttf) format("truetype");
+}
+@font-face {
+	font-family: 'AA-BebasNeue';
+	font-style: normal;
+	font-weight: normal;
+	src: url(fonts/AA-BebasNeue/AA-BebasNeue.ttf) format("truetype");
+}
 /*
 @font-face {
 	font-family: 'RobotoCondensed-BoldItalic';

@@ -374,15 +374,6 @@ form.user-login-block .links a {
 	padding-left: 8px;
 	vertical-align: middle;
 }
-#block-poll-recent .choices .title {
-	color: #3c3c3c;
-	font-family: 'RobotoCondensed';
-	font-size: 16px;
-	font-weight: normal;
-	line-height: 18px;
-	padding: 4px 15px;
-}
-
 #poll-view-voting .form-item .form-radio {
     display:none;
 }

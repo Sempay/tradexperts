@@ -1,0 +1,10 @@
+name = HyperComments
+description = Comment on a specific word or text fragment with HyperComments.
+core = 7.x
+php = 5
+
+files[] = hypercomments.module
+files[] = hypercomments.admin.inc
+files[] = hypercomments.install
+
+configure = admin/config/services/hypercomments

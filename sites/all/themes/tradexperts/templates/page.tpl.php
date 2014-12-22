@@ -11,6 +11,8 @@
 <div id="page">
 
   <header class="header" id="header" role="banner">
+    <div class="full-line"></div>
+    <div class="steps-bg"></div>
     <div class="header-content clearfix">
       <?php if ($logo): ?>
         <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" class="header__logo" id="logo"><img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" class="header__logo-image" /></a>
@@ -32,6 +34,8 @@
 
       <?php print render($page['header']); ?>
     </div>
+    <div class="steps-bg"></div>
+    <div class="full-line"></div>
   </header>
   <div id="page-content-wrapper" class="clearfix">
     <div id="page-content">
@@ -50,19 +54,19 @@
         ?>
         <div id="content" class="column" role="main">
           <!-- <?php print render($page['highlighted']); ?> -->
-          <!-- <?php print $breadcrumb; ?> -->
+          <?php print $breadcrumb; ?>
           <!-- <a id="main-content"></a> -->
-          <!-- <?php print render($title_prefix); ?> -->
-          <!-- <?php if ($title): ?> -->
-            <!-- <h1 class="page__title title" id="page-title"><?php print $title; ?></h1> -->
-          <!-- <?php endif; ?> -->
-          <!-- <?php print render($title_suffix); ?> -->
+          <?php print render($title_prefix); ?>
+          <?php if ($title && !$is_front): ?>
+            <h1 class="page__title title" id="page-title"><?php print $title; ?></h1>
+          <?php endif; ?>
+          <?php print render($title_suffix); ?>
           <?php print $messages; ?>
-          <!-- <?php print render($tabs); ?> -->
+          <?php print render($tabs); ?>
           <!-- <?php print render($page['help']); ?> -->
-          <!-- <?php if ($action_links): ?> -->
-            <!-- <ul class="action-links"><?php print render($action_links); ?></ul> -->
-          <!-- <?php endif; ?> -->
+          <?php if ($action_links): ?>
+            <ul class="action-links"><?php print render($action_links); ?></ul>
+          <?php endif; ?>
           <?php print render($page['content']); ?>
           <!-- <?php print $feed_icons; ?> -->
         </div>
@@ -78,8 +82,14 @@
       </div>
       <?php
         print render($page['content_bottom']);
-        print render($page['footer']);
       ?>
     </div>
+  </div>
+  <div class="footer">
+    <div class="full-line"></div>
+    <?php
+        print render($page['footer']);
+    ?>
+    <div class="full-line"></div>
   </div>
 </div>

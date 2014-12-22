@@ -1,4 +1,26 @@
 <?php
+define('TRADEXPERTS_WIDGET_ID', 748447);
+
+/**
+ * Implements hook_menu().
+ */
+function tradexperts_menu() {
+  return array(
+		'getlicensekey'   => array(
+			'title'           => 'Get license key',
+			'page callback'   => 'drupal_get_form',
+			'page arguments'  => array('tradexperts_callback_form'),
+			'access callback' => TRUE,
+			'type'            => MENU_CALLBACK,
+		),
+		'page-404'   => array(
+			'title'           => 'Page Not Found',
+			'page callback'   => 'tradexperts_not_found_page',
+			'access callback' => TRUE,
+			'type'            => MENU_CALLBACK,
+		),
+	);
+}
 /**
  * Implements hook_form_alter().
  */
@@ -29,5 +51,461 @@ function tradexperts_form_alter(&$form, &$form_state, $form_id) {
 
 			$form['links']['#markup'] = '<div class="links">' . l(t('Registration'), 'user/register') . ' ' . l(t('Forgot password'), 'user/password') . '</div>';
 			break;
+		case 'menu_edit_item':
+			$form['icon']['icon_hover_upload'] = array(
+				'#type'      => 'file',
+				'#title'     => t('Upload a new icon image for hover action'),
+				'#maxlength' => 41,
+	    );
+	    $form['#submit'][] = 'tradexperts_menu_icons_form_submit';
+			break;
+	}
+}
+
+function tradexperts_menu_icons_form_submit($form, &$form_state) {
+	$validate = array(
+    'file_validate_is_image' => array(),
+  );
+
+  $directory_path = menu_icons_directory_path();
+  file_prepare_directory($directory_path, FILE_CREATE_DIRECTORY);
+
+  // Check for a new uploaded icon, and use that instead.
+  if ($file = file_save_upload('icon_hover_upload', $validate)) {
+    $parts = pathinfo($file->filename);
+    $filename = $directory_path . '/menu_icon_hover_' . $form_state['values']['mlid'] . '.' . $parts['extension'];
+    file_unmanaged_copy($file->uri, $filename, FILE_EXISTS_REPLACE);
+
+    // Flush image style generated images
+    image_path_flush($filename);
+
+    $path = $filename;
+  }
+
+  $options = unserialize(db_query('SELECT options FROM {menu_links} WHERE mlid = :mlid', array(':mlid' => $form_state['values']['mlid']))->fetchField());
+  $options['menu_icon']['path_hover'] = $path;
+
+  db_update('menu_links')
+  ->fields(array(
+    'options' => serialize($options),
+  ))
+  ->condition('mlid', $form_state['values']['mlid'])
+  ->execute();
+
+  tradexperts_css_generate();
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function tradexperts_block_info() {
+	return array(
+		'tradexperts_slideshow' => array(
+			'info'  => t('Tradexperts Slideshow'),
+			'cache' => DRUPAL_NO_CACHE,
+		),
+		'tradexperts_brokers' => array(
+			'info'  => t('Tradexperts Brokers'),
+			'cache' => DRUPAL_NO_CACHE,
+		),
+		'tradexperts_callback' => array(
+			'info'  => t('Tradexperts callback'),
+			'cache' => DRUPAL_NO_CACHE,
+		),
+	);
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function tradexperts_block_view($delta = '') {
+	$block = array();
+
+	switch ($delta) {
+		case 'tradexperts_slideshow':
+			$items = tradexperts_slideshow_get_items();
+
+			if (!$items) {
+				return array('content' => '');
+			}
+
+			$block['content'] = array(
+				'#markup' => theme('tradexperts_slideshow', array(
+					'slides' => $items,
+				)),
+				'#attached' => array(
+					'js' => array(
+						drupal_get_path('module', 'tradexperts') . '/js/mobilyslider.js',
+						drupal_get_path('module', 'tradexperts') . '/js/tradexperts.slideshow.js',
+					),
+					'css' => array(
+						drupal_get_path('module', 'tradexperts') . '/css/tradexperts.slideshow.css',
+					),
+				),
+			);
+			break;
+		case 'tradexperts_brokers':
+			$block['content'] = tradexperts_brokers_block();
+			$block['subject'] = t('Brokers');
+			break;
+		case 'tradexperts_callback':
+			$block['content'] = drupal_get_form('tradexperts_callback_form');
+			break;
+	}
+
+	return $block;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function tradexperts_theme() {
+	return array(
+		'tradexperts_slideshow' => array(
+			'variables' => array(
+				'slider' => 'slider1',
+				'slides' => array(),
+			),
+			'path'     => drupal_get_path('module', 'tradexperts') . '/templates',
+			'template' => 'tradexperts-slideshow',
+		),
+		'tradexperts_brokers' => array(
+			'variables' => array(
+				'brokers' => array(),
+			),
+			'path'     => drupal_get_path('module', 'tradexperts') . '/templates',
+			'template' => 'tradexperts-brokers',
+		),
+    'tradexperts_menu_icons_css_item' => array(
+			'variables' => array(
+				'mlid'       => NULL,
+				'path'       => NULL,
+				'path_hover' => NULL,
+				'size'       => NULL,
+				'height'     => NULL,
+				'pos'        => NULL,
+				'source'     => NULL,
+			),
+			'template'  => 'tradexperts-menu-icons-css-item',
+			'path'      => drupal_get_path('module', 'tradexperts') . '/templates',
+    ),
+	);
+}
+
+/**
+ * Returns items for slide show.
+ */
+function tradexperts_slideshow_get_items() {
+	$nodes = node_load_multiple(array(), array('type' => 'slideshow', 'status' => NODE_PUBLISHED));
+
+	$items = array();
+
+	foreach ($nodes as $node) {
+		$field_link = field_get_items('node', $node, 'field_link');
+		if (!empty($field_link[0]['url']) && !empty($field_link[0]['title'])) {
+			$link = l($field_link[0]['title'], $field_link[0]['url'], array('type' => 'external') + array('attributes' => $field_link[0]['attributes']));
+		}
+		else {
+			$link = '';
+		}
+		$field_background_image = field_get_items('node', $node, 'field_background_image');
+		if (!empty($field_background_image[0]['uri'])) {
+			$background_image = $field_background_image[0]['uri'];
+		}
+		else {
+			$background_image = '';
+		}
+		$field_sub_title=  field_get_items('node', $node, 'field_sub_title');
+		if (!empty($field_sub_title[0]['value'])) {
+			$sub_title = $field_sub_title[0]['value'];
+		}
+		else {
+			$sub_title = '';
+		}
+		$items[] = array(
+			'title'            => $node->title,
+			'link'             => $link,
+			'background_image' => $background_image,
+			'sub_title'        => $sub_title,
+		);
+	}
+
+	return $items;
+}
+
+function tradexperts_brokers_block() {
+	$query = db_select('node', 'n')
+		->fields('n', array('title'));
+	$query->condition('n.type', 'brokers')
+		  ->condition('n.status', NODE_PUBLISHED);
+	$query->innerJoin('field_data_field_url_address', 'url_address', 'url_address.entity_id = n.nid AND url_address.bundle = :bundle AND url_address.entity_type = :entity_type', array(
+		':bundle'      => 'brokers',
+		':entity_type' => 'node',
+	));
+	$query->orderBy('n.created', 'DESC');
+	$query->addField('url_address', 'field_url_address_value', 'url_address');
+	$query->innerJoin('field_data_field_icon', 'icon', 'icon.entity_id = n.nid AND icon.bundle = :bundle AND icon.entity_type = :entity_type', array(
+		':bundle'      => 'brokers',
+		':entity_type' => 'node',
+	));
+	$query->innerJoin('file_managed', 'file', 'file.fid = icon.field_icon_fid');
+	$query->fields('file', array('uri'));
+
+	return theme('tradexperts_brokers', array(
+		'brokers' => $query->execute()->fetchAll(),
+	));
+}
+
+/**
+ * Returns form for callback.
+ */
+function tradexperts_callback_form($form, &$form_state) {
+	$form['number'] = array(
+		'#type'     => 'textfield',
+		'#title'    => t('Number of registered accounts'),
+		'#required' => TRUE,
+	);
+
+	$form['center'] = array(
+		'#type'    => 'radios',
+		'#title'   => t('Dealing center'),
+		'#options' => array(
+			'alpari'     => t('Alpari'),
+			'forex4you'  => t('Forex4you'),
+			'instaforex' => t('InstaForex'),
+			'roboforex'  => t('Roboforex'),
+		),
+		'#required' => TRUE,
+	);
+
+	$form['email'] = array(
+		'#type'    => 'textfield',
+		'#title'   => t('E-mail'),
+		'#required' => TRUE,
+	);
+
+	$form['message'] = array(
+		'#type'  => 'textarea',
+		'#title' => t('Message'),
+	);
+
+	$form['send'] = array(
+		'#type'  => 'submit',
+		'#value' => t('Send'),
+	);
+
+	return $form;
+}
+
+function tradexperts_callback_form_validate($form, &$form_state) {
+	if (!empty($form_state['values']['email']) && !valid_email_address($form_state['values']['email'])) {
+		form_set_error('email', t('Email address is invalid'));
+	}
+}
+
+function tradexperts_callback_form_submit($form, &$form_state) {
+	tradexperts_send_feedback($form_state['values']);
+}
+
+function tradexperts_send_feedback($values) {
+	$module = 'tradexperts';
+	$key    = 'send_feedback';
+
+	$to       = variable_get('site_mail');
+	$from     = 'noreply@' . $_SERVER['SERVER_NAME'];
+	$language = language_default();
+	$send     = TRUE;
+
+	$result = drupal_mail($module, $key, $to, $language, $values, $from, $send);
+
+	if ($result['result']) {
+		drupal_set_message(t('Your message has been sent.'));
+	}
+	else {
+		drupal_set_message(t('There was a problem sending your message and it was not sent.'), 'error');
+	}
+}
+
+/**
+ * Implements hook_mail().
+ */
+function tradexperts_mail($key, &$message, $params) {
+	$options = array(
+		'langcode' => $message['language']->language,
+	);
+
+	switch ($key) {
+		case 'send_feedback':
+			$dealing_center = array(
+				'alpari'     => t('Alpari'),
+				'forex4you'  => t('Forex4you'),
+				'instaforex' => t('InstaForex'),
+				'roboforex'  => t('Roboforex'),
+			);
+			$message['subject'] = t('Order a license key');
+			$message['body'][] = t('Number of registered accounts: @number', array(
+				'@number' => $params['number'],
+			), $options);
+			$message['body'][] = t('Dealing center: @center', array(
+				'@center' => $dealing_center[ $params['center'] ],
+			), $options);
+			$message['body'][] = t('Email: @email', array(
+				'@email' => $params['email'],
+			), $options);
+			if (!empty(trim(strip_tags($params['message'])))) {
+				$message['body'][] = t('Message: @message', array(
+					'@message' => $params['message'],
+				), $options);
+			}
+			break;
+	}
+}
+
+/**
+ * Implements hook_block_view_alter().
+ */
+function tradexperts_block_view_alter(&$data, $block) {
+	if ($block->module == 'poll') {
+		$data['content']['links'] = NULL;
+	}
+}
+
+/**
+ * Implements hook_init().
+ */
+function tradexperts_init() {
+	$cssfile = 'public://css/tradexperts-menu-icons.css';
+  if (variable_get('menu_icons_use_css', TRUE) && file_exists($cssfile)){
+    drupal_add_css($cssfile);
+  }
+}
+
+/**
+ * Function returns the page 404 "Page Not Found".
+ */
+function tradexperts_not_found_page() {
+	$message_not_found = t('Page not found');
+	return $message_not_found;
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function tradexperts_node_view($node, $view_mode, $langcode) {
+	switch ($view_mode) {
+		case 'full':
+			if ($node->type == 'page') {
+				$label = '<div class="share-block"><div class="share-label">' . t('Like this?! Share with your friends!') . '</div>';
+				$node->content['share_buttons'] = array(
+					'#markup'   => $label . '<div class="yashare-auto-init" data-yashareL10n="ru"data-yashareQuickServices="yaru,vkontakte,facebook,twitter,odnoklassniki,moimir,gplus" data-yashareTheme="counter"></div></div>',
+					'#attached' => array(
+						'js' => array(
+							'//yastatic.net/share/share.js' => array('type' => 'external'),
+						),
+					),
+					'#weight' => 5.5,
+				);
+				$message = '<div class="node-links node-links-google">';
+				$message .= t('Article Writer - !url', array('!url' => l('Google', 'https://plus.google.com/110568275264740848988?rel=author', array('attributes' => array('target' => '_blank')))));
+				$message .= '</div><div class="node-links node-links-forex">';
+				$message .= t('See more useful information - !url', array('!url' => l(t('Advisors for Forex Market'), '<front>'))) . '</div>';
+				$node->content['node_links'] = array(
+					'#markup' =>	$message,
+					'#weight' => 4.5,
+				);
+			}
+			break;
+	}
+}
+
+/**
+ * Build CSS based on menu IDs
+ *
+ * @return A string with the CSS
+ */
+function tradexperts_css_generate() {
+
+  $css      = '';
+  $result   = db_select('menu_links', 'ml')->fields('ml', array('mlid', 'options'))->execute()->fetchAll();
+  $pos      = variable_get('menu_icons_position', 'left');
+  $absolute = variable_get('menu_icons_absolute_links', FALSE);
+
+  foreach ($result as $item) {
+    $options = unserialize($item->options);
+
+    if (isset($options['menu_icon']) && $options['menu_icon']['enable'] && !empty($options['menu_icon']['path']) && file_exists($options['menu_icon']['path'])) {
+
+			$image_path       = $options['menu_icon']['path'];
+			$image_hover_path = $options['menu_icon']['path_hover'];
+			$image_style      = (isset($options['menu_icon']['image_style']) && !empty($options['menu_icon']['image_style'])) ? $options['menu_icon']['image_style'] : NULL;
+
+      if ($image_style) {
+				$source_uri       = $image_path;
+				$source_hover_uri = $image_hover_path;
+				$image_path       = image_style_path($image_style, $source_uri);
+				$image_hover_path = image_style_path($image_style, $source_hover_uri);
+
+        if (!file_exists($image_path)) {
+          image_style_create_derivative(image_style_load($image_style), $source_uri, $image_path);
+        }
+
+        if (!file_exists($image_hover_path)) {
+          image_style_create_derivative(image_style_load($image_style), $source_hover_uri, $image_hover_path);
+        }
+      }
+
+      // Retrieve the image dimensions
+			$info       = image_get_info($image_path);
+			$info_hover = image_get_info($image_hover_path);
+
+      $image_url = file_create_url($image_path);
+      $image_hover_url = file_create_url($image_hover_path);
+
+      $size = $pos == 'right' || $pos == 'left' ? $info['width'] : $info['height'];
+      // Support private filesystem
+      $css .= theme('tradexperts_menu_icons_css_item', array('mlid' => $item->mlid, 'path' => $image_url, 'path_hover' => $image_hover_url, 'size' => $size, 'height' => $info['height'], 'pos' => $pos, 'source' => $source_uri));
+    }
+  }
+  $csspath = 'public://css';
+  if (!empty($css)) {
+    file_prepare_directory($csspath, FILE_CREATE_DIRECTORY);
+    file_unmanaged_delete($csspath . '/tradexperts-menu-icons.css');
+    file_unmanaged_save_data($css, $csspath . '/tradexperts-menu-icons.css', FILE_EXISTS_REPLACE);
+  }
+  else {
+    file_unmanaged_delete($csspath . '/tradexperts-menu-icons.css');
+  }
+}
+
+/**
+ * Implements hook_flush_caches().
+ */
+function tradexperts_flush_caches() {
+  tradexperts_css_generate();
+}
+
+/**
+ * Implements template_preprocess_menu_tree().
+ */
+function tradexperts_menu_link($variables) {
+  $output   = '';
+  $element  = $variables['element'];
+  $sub_menu = '';
+
+  if ($element['#below']) {
+    $sub_menu = drupal_render($element['#below']);
+  }
+  $link = l($element['#title'], $element['#href'], $element['#localized_options']);
+  $output = '<li' . drupal_attributes($element['#attributes']) . '>' . $link . $sub_menu . "</li>\n";
+
+  return $output;
+}
+
+/**
+ * Implements hook_css_alter().
+ */
+function tradexperts_css_alter(&$css) {
+	if (isset($css['public://css/menu_icons.css'])) {
+		unset($css['public://css/menu_icons.css']);
 	}
 }

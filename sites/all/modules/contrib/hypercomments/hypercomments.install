@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * @file
+ * Provides any required installation or upgrade path requirements.
+ */
+define("HC_DEBUG", false);
+/**
+ * Implements hook_modules_installed.
+ */
+function hypercomments_modules_installed($modules) {
+  if (in_array('hypercomments', $modules)) {
+    if(HC_DEBUG){
+      variable_set('hypercomments_url', 'http://w3dev.hypercomments.com');
+    }else{
+      variable_set('hypercomments_url', 'http://www.hypercomments.com');
+    }
+  }
+  variable_set('hypercomments_debug', HC_DEBUG);
+  $message = t('You must <a href="@configuration">configure the plugin</a> to enable HyperComments.', array('@configuration' => url('admin/config/services/hypercomments')));
+  drupal_set_message($message , 'status');
+}
+/**
+ * Implementation of hook_schema().
+ */
+function hypercomments_schema() {
+  $schema = array();
+  $schema['hypercomments_meta'] = array(
+    'fields' => array(
+      'cid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),  
+      'hid' => array(
+        'type' => 'varchar', 
+        'length' => 50, 
+        'not null' => TRUE,
+        'default' => '',
+      )
+    ),
+  );
+  return $schema;
+}
+/**
+ * Implements hook_modules_uninstalled().
+ */
+function hypercomments_uninstall() {
+  db_delete('variable')->condition('name', 'hypercomments_%', 'LIKE')->execute();
+}
+
+

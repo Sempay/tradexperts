@@ -52,11 +52,35 @@ function tradexperts_preprocess_html(&$variables, $hook) {
  * @param $hook
  *   The name of the template being rendered ("page" in this case.)
  */
-/* -- Delete this line if you want to use this function
 function tradexperts_preprocess_page(&$variables, $hook) {
-  $variables['sample_variable'] = t('Lorem ipsum.');
+  drupal_add_js(array('tradexpertsWidgetId' => TRADEXPERTS_WIDGET_ID), 'setting');
+  if (!empty($variables['node']) && isset($variables['node']->field_category)) {
+    $field_category = field_get_items('node', $variables['node'], 'field_category');
+    if (!empty($field_category[0]['tid'])) {
+      $parents = taxonomy_get_parents_all($field_category[0]['tid']);
+      $breadcrumbs = array();
+      foreach ($parents as $term) {
+        $path_main_category = field_get_items('taxonomy_term', $term, 'field_main_category');
+        if (!empty($path_main_category[0]['value'])) {
+          $path = $path_main_category[0]['value'];
+        }
+        else {
+          $path = 'taxonomy/term/' . $term->tid;
+        }
+        if (request_path() !== $path) {
+          $breadcrumbs[] = l($term->name, $path);
+        }
+      }
+      $breadcrumbs = array_reverse($breadcrumbs);
+      array_unshift($breadcrumbs, l(t('Home'), '<front>'));
+      drupal_set_breadcrumb($breadcrumbs);
+    }
+  }
+  if (drupal_is_front_page()) {
+    unset($variables['page']['content']['system_main']['default_message']);
+  }
 }
-// */
+//
 
 /**
  * Override or insert variables into the node templates.
@@ -66,9 +90,7 @@ function tradexperts_preprocess_page(&$variables, $hook) {
  * @param $hook
  *   The name of the template being rendered ("node" in this case.)
  */
-/* -- Delete this line if you want to use this function
 function tradexperts_preprocess_node(&$variables, $hook) {
-  $variables['sample_variable'] = t('Lorem ipsum.');
 
   // Optionally, run node-type-specific preprocess functions, like
   // tradexperts_preprocess_node_page() or tradexperts_preprocess_node_story().
@@ -76,8 +98,15 @@ function tradexperts_preprocess_node(&$variables, $hook) {
   if (function_exists($function)) {
     $function($variables, $hook);
   }
+  unset($variables['content']['links']['node']['#links']['node-readmore']);
+
+  $variables['content']['google_stars'] = array(
+    '#markup' => tradexperts_theme_google_stars($variables['elements']['#node']),
+    '#weight' => 1000,
+  );
+  $variables['content']['links']['hypercomments'] = NULL;
 }
-// */
+
 
 /**
  * Override or insert variables into the comment templates.
@@ -130,3 +159,94 @@ function tradexperts_preprocess_block(&$variables, $hook) {
   //}
 }
 // */
+
+
+function tradexperts_theme_google_stars($node) {
+  if (module_exists('fivestar')) {
+    $field_rating = field_get_items('node', $node, 'field_rating');
+    if (isset($field_rating[0]['average'])) {
+      $votes = array(
+        20  => 1,
+        40  => 2,
+        60  => 3,
+        80  => 4,
+        100 => 5,
+      );
+      $rating   = isset($votes[0][ $field_rating[0]['average'] ]) ? $votes[0][ $field_rating[0]['average'] ] : 0;
+      $max_rate = 5;
+      $count    = isset($field_rating[0]['count']) ? $field_rating[0]['count'] : 0;
+      $html = '<div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">';
+      $html .= '<span itemprop="ratingValue">' . $rating . '</span>';
+      $html .= '<span itemprop="bestRating">' . $max_rate . '</span>';
+      $html .= '<span itemprop="reviewCount">' . $count . '</span>';
+      $html .= '</div>';
+
+      return '<div class="element-hidden">' . $html . '</div>';
+    }
+  }
+  return '';
+}
+
+/**
+ * Return a themed breadcrumb trail.
+ *
+ * @param $variables
+ *   - title: An optional string to be used as a navigational heading to give
+ *     context for breadcrumb links to screen-reader users.
+ *   - title_attributes_array: Array of HTML attributes for the title. It is
+ *     flattened into a string within the theme function.
+ *   - breadcrumb: An array containing the breadcrumb links.
+ * @return
+ *   A string containing the breadcrumb output.
+ */
+function tradexperts_breadcrumb($variables) {
+  $breadcrumb = $variables['breadcrumb'];
+  $output = '';
+
+  // Determine if we are to display the breadcrumb.
+  $show_breadcrumb = theme_get_setting('zen_breadcrumb');
+  if ($show_breadcrumb == 'yes' || $show_breadcrumb == 'admin' && arg(0) == 'admin') {
+
+    // Optionally get rid of the homepage link.
+    $show_breadcrumb_home = theme_get_setting('zen_breadcrumb_home');
+    if (!$show_breadcrumb_home) {
+      array_shift($breadcrumb);
+    }
+
+    // Return the breadcrumb with separators.
+    if (!empty($breadcrumb)) {
+      $breadcrumb_separator = filter_xss_admin(theme_get_setting('zen_breadcrumb_separator'));
+      $trailing_separator = $title = '';
+      if (theme_get_setting('zen_breadcrumb_title')) {
+        $item = menu_get_item();
+        if (!empty($item['tab_parent'])) {
+          // If we are on a non-default tab, use the tab's title.
+          $breadcrumb[] = check_plain($item['title']);
+        }
+        else {
+          $breadcrumb[] = drupal_get_title();
+        }
+      }
+      elseif (theme_get_setting('zen_breadcrumb_trailing')) {
+        $trailing_separator = $breadcrumb_separator;
+      }
+
+      // Provide a navigational heading to give context for breadcrumb links to
+      // screen-reader users.
+      if (empty($variables['title'])) {
+        $variables['title'] = t('You are here');
+      }
+      // Unless overridden by a preprocess function, make the heading invisible.
+      if (!isset($variables['title_attributes_array']['class'])) {
+        $variables['title_attributes_array']['class'][] = 'element-invisible';
+      }
+
+      // Build the breadcrumb trail.
+      $output = '<nav class="breadcrumb" role="navigation">';
+      $output .= '<ol><li>' . implode($breadcrumb_separator . '</li><li>', $breadcrumb) . $trailing_separator . '</li></ol>';
+      $output .= '</nav>';
+    }
+  }
+
+  return $output;
+}
