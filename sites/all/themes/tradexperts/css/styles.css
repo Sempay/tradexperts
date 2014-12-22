@@ -374,14 +374,6 @@ form.user-login-block .links a {
 	padding-left: 8px;
 	vertical-align: middle;
 }
-#poll-view-voting {
-	background: #fff;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
-	border: 1px solid #dddddd;
-	width: 218px;
-	margin-left: 0px;
-}
 #block-poll-recent .choices .title {
 	color: #3c3c3c;
 	font-family: 'RobotoCondensed';
