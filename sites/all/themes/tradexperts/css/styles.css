@@ -385,7 +385,7 @@ form.user-login-block .links a {
 	line-height: 29px;
 }
 .form-radios {
-	padding: 0px 0px 0px 34px;
+	padding: 4px 0px 0px 18px;
 }
 .form-item {
 	margin: 0px;
@@ -980,7 +980,7 @@ nav.breadcrumb a {
 	padding: 4px 15px;
 	width: 218px;
 }
-.poll title {
+.poll .title {
 	color: #3c3c3c;
 	font-family: 'RobotoCondensed';
 	font-size: 16px;
