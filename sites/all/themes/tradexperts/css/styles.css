@@ -994,3 +994,14 @@ nav.breadcrumb a {
 	font-weight: bold;
 	line-height: 24px;
 }
+#main .view-id-content .views-field-title a {
+	color: #313131;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 17px;
+	font-weight: bold;
+}
+#main .view-id-content.view-display-id-block_indicators .views-row + .views-row {
+	border-top: 1px solid #CFCFCF;
+	margin-top: 5px;
+	padding-top: 5px;
+}
