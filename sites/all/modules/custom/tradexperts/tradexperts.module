@@ -19,6 +19,13 @@ function tradexperts_menu() {
 			'access callback' => TRUE,
 			'type'            => MENU_CALLBACK,
 		),
+		'admin/structure/contact/settings' => array(
+			'title'            => 'Configure contact form',
+			'page callback'    => 'drupal_get_form',
+			'page arguments'   => array('tradexperts_contact_settings_form'),
+			'access arguments' => array('administer contact forms'),
+			'type'             => MENU_LOCAL_TASK,
+		),
 	);
 }
 /**
@@ -512,4 +519,14 @@ function tradexperts_css_alter(&$css) {
 	if (isset($css['public://css/menu_icons.css'])) {
 		unset($css['public://css/menu_icons.css']);
 	}
+}
+
+function tradexperts_contact_settings_form($form, &$form_state) {
+	$form['tradexperts_contact_top_text'] = array(
+		'#type'          => 'textarea',
+		'#title'         => t('Top text'),
+		'#default_value' => variable_get('tradexperts_contact_top_text'),
+	);
+
+	return system_settings_form($form);
 }
