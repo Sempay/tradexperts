@@ -79,6 +79,18 @@ function tradexperts_preprocess_page(&$variables, $hook) {
   if (drupal_is_front_page()) {
     unset($variables['page']['content']['system_main']['default_message']);
   }
+
+  if (arg(0) == 'contact' && !arg(1)) {
+    $top_text = variable_get('tradexperts_contact_top_text');
+    if ($top_text) {
+      $top_text_container['top_text'] = array(
+        '#markup' => '<div class="contact-form-top-text">' . $top_text . '</div>',
+      );
+    }
+    if (!empty($top_text_container)) {
+      $variables['page']['content'] = $top_text_container + $variables['page']['content'];
+    }
+  }
 }
 //
 

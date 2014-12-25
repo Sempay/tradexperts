@@ -22,7 +22,16 @@
 /* SMACSS theme rules */
 /* @import "theme-A.css"; */
 /* @import "theme-B.css"; */
-
+html {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 75%;
+	font-size: 87.5%;
+	font-size: 100%;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	line-height: 1.5em;
+	font-size: 14px;
+}
 body {
 	background: #244777;
 }
@@ -158,7 +167,7 @@ header#header ul.menu li ul li ul li.last a {
 	color: #FFFFFF;
 	display: inline-block;
 	font-family: 'RobotoCondensed';
-	font-size: 100%;
+	font-size: 16.2px;
 	height: auto;
 	margin-right: -4px;
 	padding: 0 9px;
