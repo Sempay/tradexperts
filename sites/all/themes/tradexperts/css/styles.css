@@ -100,7 +100,7 @@ header#header * {
 	left: 0;
 	z-index: 3;
 	background: transparent;
-	width: 100%;
+	width: auto;
 	display: none;
 }
 #header ul.menu li:hover > ul {
@@ -122,13 +122,23 @@ header#header ul.menu li.expanded ul li a,
 	width: 100%;
 	text-align: center;
 }
+header#header ul.menu li.expanded ul li a {
+	padding: 0 5px;
+}
 #header ul.menu li ul li:before {
 	display: none;
 }
 header#header ul.menu li.expanded ul li {
 	line-height: 45px;
 	margin-left: 0;
-	padding-top: 1px;
+	padding-top: 0px;
+	white-space: nowrap;
+}
+header#header ul.menu li.expanded ul li + li {
+	margin-top: -2px;
+}
+header#header ul.menu li.expanded ul li + li a {
+	border-top: 1px solid #0F223C;
 }
 #header ul.menu li ul li ul {
 	display: none;
