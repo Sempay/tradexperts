@@ -439,7 +439,6 @@ form.user-login-block .links a {
 	background-repeat: no-repeat;
 	display: inline-block;
 	height: 70px;
-	margin-left: 173px;
 	margin-top: 34px;
 	width: 205px;
 }
@@ -1076,7 +1075,8 @@ header#header > .header-content {
 	width: auto;
 }
 .footer-logo-image {
-	margin-left: 80px;
+	margin-left: 40%;
+	margin-right: 130px;
 }
 #page-content {
 	max-width: 990px;
