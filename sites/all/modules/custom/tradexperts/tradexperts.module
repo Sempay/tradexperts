@@ -69,7 +69,11 @@ function tradexperts_menu_icons_form_submit($form, &$form_state) {
 
   $directory_path = menu_icons_directory_path();
   file_prepare_directory($directory_path, FILE_CREATE_DIRECTORY);
+<<<<<<< Updated upstream
   $path = TRUE;
+=======
+  $path = TRUYE;
+>>>>>>> Stashed changes
   // Check for a new uploaded icon, and use that instead.
   if ($file = file_save_upload('icon_hover_upload', $validate)) {
     $parts = pathinfo($file->filename);
