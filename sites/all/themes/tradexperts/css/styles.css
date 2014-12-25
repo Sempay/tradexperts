@@ -98,7 +98,7 @@ header#header * {
 #header ul.menu li ul {
 	position: absolute;
 	left: 0;
-	z-index: 3;
+	z-index: 287;
 	background: transparent;
 	width: auto;
 	display: none;
