@@ -1086,3 +1086,53 @@ header#header > .header-content {
 	width: 950px;
 	margin: 0 auto;
 }
+
+.block-info,
+.block-important,
+.block-list {
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #b3876c;
+	-moz-box-shadow: 3px 3px 3px 3px #999;
+	-webkit-box-shadow: #999 3px 3px 3px 3px;
+	box-shadow: 3px 3px 3px 3px #999;
+}
+
+.block-info {
+	background-color: #FFC;
+	background-image: url(../images/info.png);
+}
+.block-important {
+	background-color: #FFD4A0;
+	background-image: url(../images/important.png);
+}
+.block-important:hover {
+	transform: scale(1.05);
+	-webkit-transform: scale(1.05);
+	-moz-transform: scale(1.05);
+	-o-transform: scale(1.05);
+}
+
+.block-info,
+.block-important {
+	background-position: 20px 50%;
+	background-repeat: no-repeat;
+	margin: 10px;
+	padding: 15px 20px 15px 80px;
+	position: relative;
+}
+
+.block-list {
+	background-color: #E4F6F8;
+	font-size: 0.9em;
+	padding: 15px 10px 15px 10px;
+	background-position: 20px 50%;
+	background-repeat: no-repeat;
+	position: relative;
+	margin: 10px;
+}
+
+.block-list li {
+	list-style-image: url(../images/galka.png);
+	margin-left: 20px;
+}
