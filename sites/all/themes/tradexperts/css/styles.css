@@ -1135,3 +1135,7 @@ header#header > .header-content {
 	list-style-image: url(../images/galka.png);
 	margin-left: 20px;
 }
+
+body.page-node article.node .field-name-body * {
+	color: #0B0B0B;
+}
