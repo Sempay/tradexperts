@@ -1150,25 +1150,25 @@ body.page-node article.node .field-name-body * {
 #header .header-content .header-center {
 	position: relative;
 }
-#header .header-content .header-center #block-menu-menu-resources {
+#header #block-menu-menu-resources {
 	position: absolute;
 	right: 0;
 	text-align: right;
 	top: -50px;
 }
-#header .header-content .header-center #block-menu-menu-resources ul.menu {
+#header #block-menu-menu-resources #header ul.menu {
 	background: inherit;
 }
-#header .header-content .header-center #block-menu-menu-resources ul.menu li a {
+#header #block-menu-menu-resources #header ul.menu li a {
 	font-size: 13px;
 	color: #00ffff;
 	text-decoration: none;
 }
-#header .header-content .header-center #block-menu-menu-resources ul.menu li a:hover {
+#header #block-menu-menu-resources #header ul.menu li a:hover {
 	background: inherit;
 	text-decoration: underline;
 	color: #ffffff;
 }
-#header .header-content .header-center #block-menu-menu-resources ul.menu li + li:before {
+#header #block-menu-menu-resources #header ul.menu li + li:before {
 	display: none;
 }
