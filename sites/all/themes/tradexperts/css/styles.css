@@ -1139,3 +1139,11 @@ header#header > .header-content {
 body.page-node article.node .field-name-body * {
 	color: #0B0B0B;
 }
+
+#content article .field-item table.cent-price-table td {
+	width: 25%;
+	text-align: center;
+}
+#content article .field-item table.cent-price-table td img {
+	width: 80%;
+}
