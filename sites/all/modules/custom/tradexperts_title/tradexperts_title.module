@@ -141,11 +141,17 @@ function tradexperts_title_menu_local_tasks_alter(&$data, $router_item, $root_pa
     if (!isset($data['tabs'][0])) {
       $data['tabs'][0] = array('output' => array(), 'count' => 1);
     }
+    if (drupal_is_front_page()) {
+      $path = variable_get('site_frontpage', 'node');
+    }
+    else {
+      $path = request_path();
+    }
     $data['tabs'][0]['output'][] = array(
       '#theme' => 'menu_local_task',
       '#link'  => array(
         'title'             => t('Edit metadata'),
-        'href'              => 'tradexperts-title/metadata/' . request_path(),
+        'href'              => 'tradexperts-title/metadata/' . $path,
         'localized_options' => array(
           'attributes' => array(
             'title' => t('Edit metadata'),
