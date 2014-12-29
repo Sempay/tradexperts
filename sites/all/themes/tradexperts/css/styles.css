@@ -146,7 +146,7 @@ header#header ul.menu li.expanded ul li + li a {
 #header ul.menu li.first {
 	margin-left: 2px;
 }
-#header ul.menu li.first a {
+#header ul.menu > li.first > a{
 	padding-left: 20px;
 	border-radius: 6px 0 0 4px;
 	margin-left: 1px;
