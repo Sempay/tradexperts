@@ -42,3 +42,15 @@ function tradexperts_title_schema() {
 
   return $schema;
 }
+
+/**
+ * Add new field to table.
+ */
+function tradexperts_title_update_7001() {
+  db_add_field('tradexperst_title_metadata', 'not_found', array(
+    'type'     => 'int',
+    'not null' => FALSE,
+    'unsigned' => TRUE,
+    'default'  => 0,
+  ));
+}

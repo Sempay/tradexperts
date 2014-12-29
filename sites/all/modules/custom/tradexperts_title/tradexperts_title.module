@@ -24,14 +24,17 @@ function tradexperts_title_metadata_load($path) {
   $query->condition('path', $path);
   $metadata[ $path ] = $query->execute()->fetchObject();
   if (empty($metadata[ $path ])) {
-    $metadata[ $path ] = new stdClass();
-    $metadata[ $path ]->id = NULL;
-    $metadata[ $path ]->path = $path;
-    $metadata[ $path ]->title = '';
-    $metadata[ $path ]->h1 = '';
+    $metadata[ $path ]              = new stdClass();
+    $metadata[ $path ]->id          = NULL;
+    $metadata[ $path ]->path        = $path;
+    $metadata[ $path ]->title       = '';
+    $metadata[ $path ]->h1          = '';
     $metadata[ $path ]->description = '';
-    $metadata[ $path ]->keywords = '';
+    $metadata[ $path ]->keywords    = '';
+    $metadata[ $path ]->not_found   = 0;
   }
+  $metadata[ $path ]->not_found = (bool)$metadata[ $path ]->not_found;
+
   return $metadata[ $path ];
 }
 
@@ -40,6 +43,7 @@ function tradexperts_title_metadata_page() {
   array_shift($args);
   array_shift($args);
   $path  = implode('/', $args);
+  $path  = drupal_get_normal_path($path);
   if (drupal_valid_path($path)) {
     return drupal_get_form('tradexperts_title_metadata_form', $path);
   }
@@ -74,6 +78,12 @@ function tradexperts_title_metadata_form($form, &$form_state, $path) {
     '#default_value' => $entry->keywords,
   );
 
+  $form['not_found'] = array(
+    '#type'          => 'checkbox',
+    '#title'         => t('Return `Page not found`'),
+    '#default_value' => $entry->not_found,
+  );
+
   $form['actions'] = array(
     '#type' => 'actions',
   );
@@ -92,6 +102,7 @@ function tradexperts_title_metadata_form_submit($form, &$form_state) {
     'h1'          => $form_state['values']['h1'],
     'description' => $form_state['values']['description'],
     'keywords'    => $form_state['values']['keywords'],
+    'not_found'   => $form_state['values']['not_found'],
   );
   $path = $form_state['storage']['path'];
 
@@ -134,7 +145,7 @@ function tradexperts_title_menu_local_tasks_alter(&$data, $router_item, $root_pa
       '#theme' => 'menu_local_task',
       '#link'  => array(
         'title'             => t('Edit metadata'),
-        'href'              => 'tradexperts-title/metadata/' . current_path(),
+        'href'              => 'tradexperts-title/metadata/' . request_path(),
         'localized_options' => array(
           'attributes' => array(
             'title' => t('Edit metadata'),
@@ -182,7 +193,7 @@ function tradexperts_title_preprocess_html(&$variables) {
   if (!empty($metadata->title)) {
     $head_title = array(
       'title' => strip_tags($metadata->title),
-      'name' => check_plain(variable_get('site_name', 'Drupal')),
+      'name'  => check_plain(variable_get('site_name', 'Drupal')),
     );
     $variables['head_title_array'] = $head_title;
     $variables['head_title'] = implode(' | ', $head_title);
@@ -208,4 +219,15 @@ function tradexperts_title_permission() {
       'title' => t('Access to manage metadata'),
     ),
   );
+}
+
+/**
+ * Implements hook_init().
+ */
+function tradexperts_title_init() {
+  $metadata = tradexperts_title_metadata_load(current_path());
+  if (!empty($metadata->not_found)) {
+    drupal_not_found();
+    drupal_exit();
+  }
 }
