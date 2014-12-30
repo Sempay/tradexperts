@@ -82,33 +82,37 @@ header#header * {
 /* Header menu */
 #header ul.menu {
 	background: url(../images/header-menu-bg.png);
+	display: inline-block;
 	height: 46px;
 	line-height: 38px;
 	margin-top: 0;
 	padding: 0;
-	width: 705px;
-	display: inline-block;
-	width: auto;
 	position: relative;
+	width: 705px;
+	width: auto;
 }
-#header ul.menu:after {
+#block-system-main-menu {
+	text-align: right;
+}
+#header #block-system-main-menu ul.menu:after {
+	background-position: -698px;
+	background-repeat: no-repeat;
+	background: url(../images/header-menu-bg.png);
 	content: '';
 	display: inline-block;
-	width: 5px;
 	height: 48px;
-	background: url(../images/header-menu-bg.png);
-	background-repeat: no-repeat;
-	background-position: -698px;
 	position: absolute;
-	top: -1px;
 	right: -5px;
+	top: -1px;
+	width: 5px;
 }
 #header ul.menu li {
 	display: inline-block;
 	height: auto;
 	list-style: none;
-	vertical-align: top;
 	position: relative;
+	vertical-align: top;
+	z-index: 1
 }
 #header ul.menu li ul {
 	position: absolute;
