@@ -87,6 +87,21 @@ header#header * {
 	margin-top: 0;
 	padding: 0;
 	width: 705px;
+	display: inline-block;
+	width: auto;
+	position: relative;
+}
+#header ul.menu:after {
+	content: '';
+	display: inline-block;
+	width: 5px;
+	height: 48px;
+	background: url(../images/header-menu-bg.png);
+	background-repeat: no-repeat;
+	background-position: -698px;
+	position: absolute;
+	top: -1px;
+	right: -5px;
 }
 #header ul.menu li {
 	display: inline-block;
