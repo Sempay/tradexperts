@@ -95,9 +95,9 @@ header#header * {
 	text-align: right;
 }
 #header #block-system-main-menu ul.menu:after {
+	background: url(../images/header-menu-bg.png);
 	background-position: -698px;
 	background-repeat: no-repeat;
-	background: url(../images/header-menu-bg.png);
 	content: '';
 	display: inline-block;
 	height: 48px;
