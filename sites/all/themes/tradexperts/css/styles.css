@@ -260,6 +260,8 @@ header#header ul.menu li ul li ul li.last a {
 	font-family: 'RobotoCondensed';
 	font-size: 18px;
 	text-decoration: none;
+	display: inline-block;
+	margin-left: 14px;
 }
 #block-menu-menu-sidebar-menu .menu li a:before {
 	content: ' ';
@@ -267,7 +269,7 @@ header#header ul.menu li ul li ul li.last a {
 	height: 13px;
 
 	display: inline-block;
-	margin-left: -6px;
+	margin-left: -20px;
 	margin-right: 6px;
 }
 #block-menu-menu-sidebar-menu .menu li a:not(.menu_icon):before {
@@ -1169,20 +1171,19 @@ body.page-node article.node .field-name-body * {
 	position: absolute;
 	right: 0;
 	text-align: right;
-	top: -50px;
+	top: -40px;
 }
 #header #block-menu-menu-resources ul.menu {
 	background: inherit;
 }
 #header #block-menu-menu-resources ul.menu li a {
 	font-size: 13px;
-	color: #00ffff;
+	color: #F0F0F0;
 	text-decoration: none;
 }
 #header #block-menu-menu-resources ul.menu li a:hover {
 	background: inherit;
 	text-decoration: underline;
-	color: #ffffff;
 }
 #header #block-menu-menu-resources ul.menu li:before {
 	display: none;
